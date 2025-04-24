@@ -1,4 +1,4 @@
-import random 
+import random
 
 class Carte:
     def __init__(self, valeur, couleur):
@@ -21,6 +21,12 @@ class Paquet:
                 self.cartes.append(Carte(valeur, couleur))
         #mélange alétaoire liste
         random.shuffle(self.cartes)
+
+    def style_carte(self, carte):
+        if carte.couleur in["Coeur", "Carreau"]:
+            return{"bg": "red", "fg": "white"}
+
+
 
     def tirer(self):
         return self.cartes.pop()
