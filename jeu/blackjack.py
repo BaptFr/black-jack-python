@@ -9,27 +9,31 @@ class Carte:
         return f"{self.valeur} de {self.couleur}"
 
 class Paquet:
+    #Création paquet de cartes x52
     def __init__(self):
         couleurs = ["Coeur", "Carreau", "Trèfle", "Pique"]
         valeurs = [ "2", "3", "4", "5", "6", "7", "8", "9", "10", "V", "D", "R", "As"]
         #Liste cartes
         self.cartes = []
 
-        #Création paquet de cartes x52
+        
+        #Boucles imbriquées. Itérer valeurs sur les x4couleurs
         for couleur in couleurs:
             for valeur in valeurs:
                 self.cartes.append(Carte(valeur, couleur))
-        #mélange alétaoire liste
+
+        #mélange aléatoire liste
         random.shuffle(self.cartes)
 
+    #Style des cartes
     def style_carte(self, carte):
         if carte.couleur in["Coeur", "Carreau"]:
-            return{"bg": "red", "fg": "white"}
-
-
-
+            return{"bg": "white", "fg": "red", "font": ("Arial", 16)}
+        return{"bg": "white", "fg": "black", "font": ("Arial", 16)}
+    # Fonction tirage d'une carte
     def tirer(self):
         return self.cartes.pop()
+
 
 class Jeu:
     def __init__(self):
