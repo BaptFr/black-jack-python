@@ -1,9 +1,13 @@
-import tkinter as tk
+import pygame
+pygame.init()
+import sys
 from jeu.blackjack import Jeu, Paquet
 
-root = tk.Tk()
-root.title("BlackJack")
-root.geometry("400x300")
+# pygame config
+
+screen= pygame.display.set_mode((800, 600))
+pygame.display.set_caption(" BLACKJACK ")
+font = pygame.font.SysFont("Arial", 24)
 
 jeu = Jeu()
 paquet = Paquet()
@@ -39,36 +43,38 @@ for _ in range (2):
     carte_croupier = paquet.tirer()
     jeu.croupier.append(carte_croupier)
 
+#Affichage style cartes / Fonction enum
+def afficher_cartes(cartes, y_position):
+    for i, carte in enumerate(cartes):
+        style = paquet.style_carte(carte) #recup style carte
+        couleur_texte = pygame.Color(style["color"])
+        texte = font.render(str(carte), True, couleur_texte)
+        screen.blit(texte, (300 + i*140, y_position)) # i ajout décalage 2nde carte
 
+#GESTION AFFICHAGE
+#clock framerate pour limiter
+clock = pygame.time.Clock()
+running = True
 
-#Affichage / style
-label = tk.Label(root, text="BlackJack", font=("Arial", 24))
-label.pack()
+#Jeu actif - cycle principal pygame
+while running:
+    #Effacer écran
+    screen.fill((255, 255, 255))
+    #Affichage position cartes croupier
+    afficher_cartes(jeu.croupier, 50)
+    #Affichage position cartes joueur
+    afficher_cartes(jeu.joueur, 375)
 
-#Affichage cartes joueur/croupier / Fonction enum
+    # Màj affichage écran
+    pygame.display.flip()
 
-for i, carte in enumerate(jeu.joueur):
-    style = paquet.style_carte(carte)
-    tk.Label(root, text=str(carte), bd="2", font=style["font"], fg=style["fg"]).place(x=100 + i*100, y=50)  # i ajout décalage 2nde carte
-
-for i, carte in enumerate(jeu.croupier):
-    style = paquet.style_carte(carte)
-    tk.Label(root, text=str(carte), bd="2", font=style["font"], fg=style["fg"]).place(x=100 + i*100, y=200)
-
-
-# tk.Label(root, text=str(jeu.croupier[0]), bd="2", font=("Arial", 16)).place(x=100, y=50)
-# tk.Label(root, text=str(jeu.croupier[1]), bd="2", font=("Arial", 16)).place(x=150, y=50)
-
-
-# tk.Label(root, text=str(jeu.joueur[1]), bd="2", font=("Arial", 16)).place(x=150, y=200)
-
-#test
-
-
+    #gestionnaire d'évenement
+    for event in pygame.event.get():
+        #SI fermeture de la fenêtre
+        if event.type == pygame.QUIT:
+            running = False
+    #Limite en FPS:
+    clock.tick(60)
 
 print(jeu.joueur)
 print(jeu.croupier)
-
-root.mainloop()
-
-

@@ -16,7 +16,6 @@ class Paquet:
         #Liste cartes
         self.cartes = []
 
-        
         #Boucles imbriquées. Itérer valeurs sur les x4couleurs
         for couleur in couleurs:
             for valeur in valeurs:
@@ -25,15 +24,15 @@ class Paquet:
         #mélange aléatoire liste
         random.shuffle(self.cartes)
 
-    #Style des cartes
+    #Style des cartes (pygame rgba)
     def style_carte(self, carte):
         if carte.couleur in["Coeur", "Carreau"]:
-            return{"bg": "white", "fg": "red", "font": ("Arial", 16)}
-        return{"bg": "white", "fg": "black", "font": ("Arial", 16)}
+            return{"color": (255, 0, 0)}
+        return{"color": (0,0,0)} #else
+
     # Fonction tirage d'une carte
     def tirer(self):
         return self.cartes.pop()
-
 
 class Jeu:
     def __init__(self):
