@@ -23,4 +23,4 @@ L’as peut valoir 1 ou 11, selon ce qui est le plus favorable.
 
 ## 📄 Règles officielles
 Pour consulter les règles officielles du BlackJack (Arrêté Legifrance) :
-[📘 Télécharger le PDF](assets/regles_blackjack.pdf)
+[📘 Télécharger le PDF](https://github.com/BaptFr/black-jack-python/blob/master/assets/regles-blackjack.pdf)

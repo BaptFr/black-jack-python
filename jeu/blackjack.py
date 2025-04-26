@@ -47,7 +47,7 @@ class Compteur:
             #d'abord reprendre valeur (string)
             valeur = carte.valeur
             #utiliser la conversion en int
-            total_main = self.valeurs_carte[valeur]
+            total_main = total_main + self.valeurs_cartes[valeur]
         return total_main
 
     def mise_a_j_valeur_main(self, jeu):
@@ -55,12 +55,14 @@ class Compteur:
         self.valeur_croupier = self.calcul_valeur_main(jeu.croupier)
 
 
-
 class Jeu:
+    #contient les mains
     def __init__(self):
         self.joueur = []
         self.croupier = []
         self.compteur = Compteur()
 
     def afficher_valeurs(self):
+        print(f"Main Croupier: {self.compteur.valeur_croupier}")
+        print(f"Main Joueur: {self.compteur.valeur_joueur}")
 

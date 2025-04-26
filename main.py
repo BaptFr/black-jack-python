@@ -4,7 +4,6 @@ import sys
 from jeu.blackjack import Jeu, Paquet
 
 # pygame config
-
 screen= pygame.display.set_mode((800, 600))
 pygame.display.set_caption(" BLACKJACK ")
 font = pygame.font.SysFont("Arial", 24)
@@ -12,7 +11,8 @@ font = pygame.font.SysFont("Arial", 24)
 jeu = Jeu()
 paquet = Paquet()
 
-#Tirage en boucle. Ordre joueur -> croupier x2
+## TIRAGE DES CARTES ##
+#Tirage en boucle. Ordre joueur -> croupier (x2)
 for _ in range (2):
     carte_joueur = paquet.tirer()
     jeu.joueur.append(carte_joueur)
@@ -20,20 +20,36 @@ for _ in range (2):
     carte_croupier = paquet.tirer()
     jeu.croupier.append(carte_croupier)
 
-#Affichage style cartes / Fonction enum
+# affichage style cartes / Fonction enum
 def afficher_cartes(cartes, y_position, masquee=False):
     for i, carte in enumerate(cartes):
         #conditions pour masquer 2eme carte croupier(i==1)
         if masquee and i == 1:
             pygame.draw.rect(screen, (0, 0, 255), (100 + i*100, y_position, 72, 96))
-            pygame.draw.line(screen, (0, 0, 0), (100 + i*100, y_position), (100 + i*100 + 72, y_position + 96), 5)
         else:
             style = paquet.style_carte(carte) #recup style carte
             couleur_texte = pygame.Color(style["color"])
             texte = font.render(str(carte), True, couleur_texte)
             screen.blit(texte, (300 + i*140, y_position)) # i ajout décalage 2nde carte
 
-#GESTION AFFICHAGE
+# maj valeur main
+jeu.compteur.mise_a_j_valeur_main(jeu)
+
+texte_valeur_croupier = font.render(f"Main du croupier: {jeu.compteur.valeur_croupier}", True, (0, 0, 0))
+screen.blit(texte_valeur_croupier, (50, 50))
+
+
+texte_valeur_joueur = font.render(f"Main du joueuur: {jeu.compteur.valeur_joueur}", True, (0, 0, 0))
+screen.blit(texte_valeur_joueur, (50, 300))
+
+## TEST TERMINAL  ##
+
+print(jeu.croupier)
+print(jeu.compteur.valeur_croupier)
+print(jeu.joueur)
+print(jeu.compteur.valeur_joueur)
+
+## GESTION PARAMETRES AFFICHAGE PYGAME ##
 #clock framerate pour limiter
 clock = pygame.time.Clock()
 running = True
@@ -58,5 +74,3 @@ while running:
     #Limite en FPS:
     clock.tick(60)
 
-print(jeu.joueur)
-print(jeu.croupier)
