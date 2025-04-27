@@ -11,6 +11,7 @@ Projet de jeu BlackJack codé en Python 🐍  pour travailler la POO et la logiq
 ## ⚙️ Caractéristiques et fonctionnalités du jeu
 - Création et mélange d’un paquet de 52 cartes
 - Distribution de cartes au joueur et au croupier
+- Compteur de la valeur des mains
 
 
 ## 🃏 Règles du jeu

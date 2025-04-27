@@ -62,7 +62,8 @@ while running:
     afficher_cartes(jeu.croupier, 50, masquee=True)
     #Affichage position cartes joueur
     afficher_cartes(jeu.joueur, 375)
-
+    texte_valeur_croupier ## NE S'AFFICHE PAS
+    texte_valeur_joueur
     # Màj affichage écran
     pygame.display.flip()
 

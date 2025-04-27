@@ -65,4 +65,3 @@ class Jeu:
     def afficher_valeurs(self):
         print(f"Main Croupier: {self.compteur.valeur_croupier}")
         print(f"Main Joueur: {self.compteur.valeur_joueur}")
-

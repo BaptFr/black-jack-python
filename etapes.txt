@@ -1,0 +1,25 @@
+
+
+
+
+- Affichage compteur dans le jeu
+***print OK mais pas dans le jeu **
+-Compteur positionnner croupier en haut à gauche, joueuru en bas à droite
+
+
+Etape 3
+ajouter fonctionnalité Max 21, Defaite / blackjack ...
+ajouter foonctionnalité de bases : HIT / STAND
+ajouter conditions calcul de l'AS > 21 = 1 ...
+
+
+Etape 4
+fonctionnalité sup : DOUBLE / SPLIT
+
+
+Etape *
+graphique/ style :
+- Fond tapis
+- Style des cartes
+
+- Sons
