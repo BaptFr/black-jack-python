@@ -23,27 +23,17 @@ for _ in range (2):
 # affichage style cartes / Fonction enum
 def afficher_cartes(cartes, y_position, masquee=False):
     for i, carte in enumerate(cartes):
-        #conditions pour masquer 2eme carte croupier(i==1)
+        #conditions pour masquer 2eme carte croupier
         if masquee and i == 1:
-            pygame.draw.rect(screen, (0, 0, 255), (100 + i*100, y_position, 72, 96))
+            pygame.draw.rect(screen, (0, 0, 255), (300 + i*130, y_position, 72, 96))
         else:
             style = paquet.style_carte(carte) #recup style carte
             couleur_texte = pygame.Color(style["color"])
             texte = font.render(str(carte), True, couleur_texte)
-            screen.blit(texte, (300 + i*140, y_position)) # i ajout décalage 2nde carte
+            screen.blit(texte, (300 + i*130, y_position)) # i ajout décalage 2nde carte
 
-# maj valeur main
-jeu.compteur.mise_a_j_valeur_main(jeu)
-
-texte_valeur_croupier = font.render(f"Main du croupier: {jeu.compteur.valeur_croupier}", True, (0, 0, 0))
-screen.blit(texte_valeur_croupier, (50, 50))
-
-
-texte_valeur_joueur = font.render(f"Main du joueuur: {jeu.compteur.valeur_joueur}", True, (0, 0, 0))
-screen.blit(texte_valeur_joueur, (50, 300))
 
 ## TEST TERMINAL  ##
-
 print(jeu.croupier)
 print(jeu.compteur.valeur_croupier)
 print(jeu.joueur)
@@ -58,16 +48,27 @@ running = True
 while running:
     #Effacer écran
     screen.fill((255, 255, 255))
-    #Affichage position cartes croupier | Boolean masquee pour la condition
+
+
+    #Affichage f position cartes croupier et joueur | Boolean masquee pour la condition
     afficher_cartes(jeu.croupier, 50, masquee=True)
-    #Affichage position cartes joueur
     afficher_cartes(jeu.joueur, 375)
-    texte_valeur_croupier ## NE S'AFFICHE PAS
-    texte_valeur_joueur
+
+    # maj compteur main
+    jeu.compteur.mise_a_j_valeur_main(jeu)
+    texte_compteur_joueur = font.render(f"Joueur: {jeu.compteur.valeur_joueur}", True,(0, 0, 0))
+    texte_compteur_croupier = font.render(f"Croupier: {jeu.compteur.valeur_croupier}", True,(0, 0, 0))
+    #Affichage des compturs
+    screen.blit(texte_compteur_joueur, (50, 375))
+    screen.blit(texte_compteur_croupier, (50, 50))
+
+
+
     # Màj affichage écran
     pygame.display.flip()
 
-    #gestionnaire d'évenement
+
+    #gestionnaire d'évenement  / fermeture
     for event in pygame.event.get():
         #SI fermeture de la fenêtre
         if event.type == pygame.QUIT:
