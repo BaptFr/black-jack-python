@@ -39,6 +39,7 @@ print(jeu.compteur.valeur_croupier)
 print(jeu.joueur)
 print(jeu.compteur.valeur_joueur)
 
+
 ## GESTION PARAMETRES AFFICHAGE PYGAME ##
 #clock framerate pour limiter
 clock = pygame.time.Clock()
@@ -58,6 +59,8 @@ while running:
     jeu.compteur.mise_a_j_valeur_main(jeu)
     texte_compteur_joueur = font.render(f"Joueur: {jeu.compteur.valeur_joueur}", True,(0, 0, 0))
     texte_compteur_croupier = font.render(f"Croupier: {jeu.compteur.valeur_croupier}", True,(0, 0, 0))
+    
+    
     #Affichage des compturs
     screen.blit(texte_compteur_joueur, (50, 375))
     screen.blit(texte_compteur_croupier, (50, 50))
