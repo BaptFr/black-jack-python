@@ -2,9 +2,9 @@
 
 
 
-- Affichage compteur dans le jeu
-***print OK mais pas dans le jeu **
--Compteur positionnner croupier en haut à gauche, joueuru en bas à droite
+***Affichage compteur dans le jeu***
+***print OK mais pas dans le jeu ***
+***Compteur positionnner croupier en haut à gauche, joueuru en bas à droite****
 
 
 Etape 3

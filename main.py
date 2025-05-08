@@ -32,6 +32,9 @@ def afficher_cartes(cartes, y_position, masquee=False):
             texte = font.render(str(carte), True, couleur_texte)
             screen.blit(texte, (300 + i*130, y_position)) # i ajout décalage 2nde carte
 
+# maj compteur main
+jeu.compteur.mise_a_j_valeur_main(jeu)
+
 
 ## TEST TERMINAL  ##
 print(jeu.croupier)
@@ -39,7 +42,12 @@ print(jeu.compteur.valeur_croupier)
 print(jeu.joueur)
 print(jeu.compteur.valeur_joueur)
 
+
 ## GESTION PARAMETRES AFFICHAGE PYGAME ##
+
+# GESTION du rafraichissement: action/inaction
+besoin_rafraichissement = True
+
 #clock framerate pour limiter
 clock = pygame.time.Clock()
 running = True
@@ -49,30 +57,27 @@ while running:
     #Effacer écran
     screen.fill((255, 255, 255))
 
+    if besoin_rafraichissement:
+        #Affichage f position cartes croupier et joueur | Boolean masquee pour la condition
+        afficher_cartes(jeu.croupier, 50, masquee=True)
+        afficher_cartes(jeu.joueur, 375)
 
-    #Affichage f position cartes croupier et joueur | Boolean masquee pour la condition
-    afficher_cartes(jeu.croupier, 50, masquee=True)
-    afficher_cartes(jeu.joueur, 375)
+        #Affichage de compturs
+        texte_compteur_joueur = font.render(f"Joueur: {jeu.compteur.valeur_joueur}", True,(0, 0, 0))
+        texte_compteur_croupier = font.render(f"Croupier: {jeu.compteur.valeur_croupier}", True,(0, 0, 0))
+        screen.blit(texte_compteur_joueur, (50, 375))
+        screen.blit(texte_compteur_croupier, (50, 50))
 
-    # maj compteur main
-    jeu.compteur.mise_a_j_valeur_main(jeu)
-    texte_compteur_joueur = font.render(f"Joueur: {jeu.compteur.valeur_joueur}", True,(0, 0, 0))
-    texte_compteur_croupier = font.render(f"Croupier: {jeu.compteur.valeur_croupier}", True,(0, 0, 0))
-    #Affichage des compturs
-    screen.blit(texte_compteur_joueur, (50, 375))
-    screen.blit(texte_compteur_croupier, (50, 50))
-
-
-
-    # Màj affichage écran
-    pygame.display.flip()
+        # Màj affichage écran
+        pygame.display.flip()
+        besoin_rafraichissement = False  #blocage rafraichissement inaction
 
 
-    #gestionnaire d'évenement  / fermeture
+    #gestionnaire d'évenement  / fermeture fntre
     for event in pygame.event.get():
         #SI fermeture de la fenêtre
         if event.type == pygame.QUIT:
             running = False
     #Limite en FPS:
-    clock.tick(60)
+    clock.tick(10)
 
