@@ -43,6 +43,7 @@ print(jeu.joueur)
 print(jeu.compteur.valeur_joueur)
 
 
+
 ## GESTION PARAMETRES AFFICHAGE PYGAME ##
 
 # GESTION du rafraichissement: action/inaction
