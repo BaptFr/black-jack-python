@@ -23,11 +23,14 @@ class Paquet:
         #mélange aléat. liste
         random.shuffle(self.cartes)
 
+
     #Style des cartes (pygame rgba)
     def style_carte(self, carte):
         if carte.couleur in["Coeur", "Carreau"]:
             return{"color": (255, 0, 0)}
         return{"color": (0,0,0)} #else
+
+
     # Fonction tirage d'une carte
     def tirer(self):
         return self.cartes.pop()
@@ -62,7 +65,15 @@ class Jeu:
         self.joueur = []
         self.croupier = []
         self.compteur = Compteur()
+        self.paquet = Paquet()
 
     def afficher_valeurs(self):
         print(f"Main Croupier: {self.compteur.valeur_croupier}")
         print(f"Main Joueur: {self.compteur.valeur_joueur}")
+
+    #Tirage de carte via le bouton joueur
+    def  tirer_carte_joueur(self):
+        carte = self.paquet.tirer()
+        self.joueur.append(carte)
+        self.compteur.mise_a_j_valeur_main(self)
+
