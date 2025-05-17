@@ -9,49 +9,61 @@ pygame.display.set_caption(" BLACKJACK ")
 font = pygame.font.SysFont("Arial", 24)
 
 jeu = Jeu()
-paquet = Paquet()
+
+
 
 ## TIRAGE DES CARTES ##
-#Tirage en boucle. Ordre joueur -> croupier (x2)
+    #Tirage en boucle. Ordre joueur -> croupier (x2)
 for _ in range (2):
-    carte_joueur = paquet.tirer()
+    carte_joueur = jeu.paquet.tirer()
     jeu.joueur.append(carte_joueur)
 
-    carte_croupier = paquet.tirer()
+    carte_croupier = jeu.paquet.tirer()
     jeu.croupier.append(carte_croupier)
 
-# affichage style cartes / Fonction enum
+
+    # Affichage style cartes / Fonction enum
 def afficher_cartes(cartes, y_position, masquee=False):
     for i, carte in enumerate(cartes):
-        #conditions pour masquer 2eme carte croupier
+    #Conditions pour masquer 2eme carte croupier
         if masquee and i == 1:
             pygame.draw.rect(screen, (0, 0, 255), (200 + i*120, y_position, 72, 96))
         else:
-            style = paquet.style_carte(carte) #recup style carte
+            style = jeu.paquet.style_carte(carte) #recup style carte
             couleur_texte = pygame.Color(style["color"])
             texte = font.render(str(carte), True, couleur_texte)
             screen.blit(texte, (200 + i*120, y_position)) # i ajout décalage 2nde carte
 
-# maj compteur main
+
+def afficher_score_croupier_une_carte(jeu, masquee):
+        if masquee and len(jeu.croupier) > 0:
+            premiere_carte = jeu.croupier[0]
+            valeur_premiere_carte = jeu.compteur.valeurs_cartes[premiere_carte.valeur]
+            return f"Croupier: {valeur_premiere_carte}"
+        else:
+            return f"Croupier: {jeu.compteur.valeur_croupier}"
+
+    # maj compteur main
 jeu.compteur.mise_a_j_valeur_main(jeu)
 
 
 ## TEST TERMINAL  ##
 print(jeu.croupier)
-print(jeu.compteur.valeur_croupier)
+print("Masquée")
 print(jeu.joueur)
 print(jeu.compteur.valeur_joueur)
 
-## GESTION PARAMETRES AFFICHAGE PYGAME ##
 
-# GESTION du rafraichissement: action/inaction
+
+## GESTION PARAMETRES AFFICHAGE PYGAME ##
+    # GESTION du rafraichissement: action/inaction
 besoin_rafraichissement = True
 
-#clock framerate pour limiter
+    #clock framerate pour limiter
 clock = pygame.time.Clock()
 running = True
 
-#Jeu actif - cycle principal pygame
+    #Jeu actif - cycle principal pygame
 while running:
     #Effacer écran
     screen.fill((255, 255, 255))
@@ -67,7 +79,7 @@ while running:
 
         # Affichage de compturs
         texte_compteur_joueur = font.render(f"Joueur: {jeu.compteur.valeur_joueur}", True,(0, 0, 0))
-        texte_compteur_croupier = font.render(f"Croupier: {jeu.compteur.valeur_croupier}", True,(0, 0, 0))
+        texte_compteur_croupier = font.render(afficher_score_croupier_une_carte(jeu, masquee=True), True, (0, 0, 0))
         screen.blit(texte_compteur_joueur, (50, 375))
         screen.blit(texte_compteur_croupier, (50, 50))
 
