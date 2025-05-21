@@ -35,6 +35,7 @@ def afficher_cartes(cartes, y_position, masquee=False):
             screen.blit(texte, (200 + i*120, y_position)) # i ajout décalage 2nde carte
 
 
+
 def afficher_score_croupier_une_carte(jeu, masquee):
         if masquee and len(jeu.croupier) > 0:
             premiere_carte = jeu.croupier[0]
@@ -43,7 +44,7 @@ def afficher_score_croupier_une_carte(jeu, masquee):
         else:
             return f"Croupier: {jeu.compteur.valeur_croupier}"
 
-    # maj compteur main
+# maj compteur main
 jeu.compteur.mise_a_j_valeur_main(jeu)
 
 
@@ -77,7 +78,7 @@ while running:
         afficher_cartes(jeu.croupier, 50, masquee=True)
         afficher_cartes(jeu.joueur, 375)
 
-        # Affichage de compturs
+        #Affichage de compturs
         texte_compteur_joueur = font.render(f"Joueur: {jeu.compteur.valeur_joueur}", True,(0, 0, 0))
         texte_compteur_croupier = font.render(afficher_score_croupier_une_carte(jeu, masquee=True), True, (0, 0, 0))
         screen.blit(texte_compteur_joueur, (50, 375))
@@ -96,16 +97,23 @@ while running:
         besoin_rafraichissement = False  #blocage rafraichissement inaction
 
 
-    #Gestionnaire d'évenement
+    ##GESTION D'EVENEMENTS
     for event in pygame.event.get():
-        #SI fermeture de la fenêtre
         if event.type == pygame.QUIT:
             running = False
+
         #SI tirage joueur
         elif event.type == pygame.MOUSEBUTTONDOWN:   #Clique dans la fenetre
             if bouton_tirer.collidepoint(event.pos):  # collidepoint() méthode, eventpos = coordonnées Si click dans le rectangle bouton tirer
                 jeu.tirer_carte_joueur()
-                besoin_rafraichissement = True
+
+            valeur_main_joueur = jeu.compteur.mise_a_j_valeur_main(jeu)
+            if valeur_main_joueur > 21:
+                print('PERDU')
+            elif valeur_main_joueur == 21:
+                print("BLACK JACK")
+        besoin_rafraichissement = True
+
     #Limite en FPS:
     clock.tick(10)
 

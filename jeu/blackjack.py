@@ -57,6 +57,8 @@ class Compteur:
     def mise_a_j_valeur_main(self, jeu):
         self.valeur_joueur = self.calcul_valeur_main(jeu.joueur)
         self.valeur_croupier = self.calcul_valeur_main(jeu.croupier)
+        return self.valeur_joueur
+
 
 
 class Jeu:
