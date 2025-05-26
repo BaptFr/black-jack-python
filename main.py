@@ -21,6 +21,24 @@ for _ in range (2):
     carte_croupier = jeu.paquet.tirer()
     jeu.croupier.append(carte_croupier)
 
+# maj compteur main
+jeu.compteur.mise_a_j_valeur_main(jeu)
+
+# Variables de contrôle
+carte_croupier_masquee = True
+jeu_termine = False
+message_fin = ""
+
+# Vérif Blackjack
+if len(jeu.joueur) == 2 and jeu.compteur.valeur_joueur == 21:
+    carte_croupier_masquee = False  # on montre la carte cachée
+    jeu.compteur.mise_a_j_valeur_main(jeu)  # on met bien à jour les scores
+
+    if jeu.compteur.valeur_croupier == 21:
+        message_fin = "Égalité ! Les deux ont un Blackjack."
+    else:
+        message_fin = "Blackjack ! Vous gagnez."
+    jeu_termine = True
 
     # Affichage style cartes / Fonction enum
 def afficher_cartes(cartes, y_position, masquee=False):
@@ -44,8 +62,6 @@ def afficher_score_croupier_une_carte(jeu, masquee):
         else:
             return f"Croupier: {jeu.compteur.valeur_croupier}"
 
-# maj compteur main
-jeu.compteur.mise_a_j_valeur_main(jeu)
 
 
 ## TEST TERMINAL  ##
@@ -113,6 +129,7 @@ while running:
             elif valeur_main_joueur == 21:
                 print("BLACK JACK")
         besoin_rafraichissement = True
+        
 
     #Limite en FPS:
     clock.tick(10)
