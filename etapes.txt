@@ -5,11 +5,17 @@ Base DU JEU
 
 
 Etape 2  Interactions du joueurs
-Ajouter actions joueur :
-    - Hit
-    - Stand
-Affichage basique Pygame des actions
-Reaction du jeu après action
+****Ajouter actions joueur :
+   *** - Hit
+   *** - Stand
+****Affichage basique Pygame des actions
+Reaction du jeu après action:
+    Tirage
+    Si joueur a 21 directement :
+        Révéler la 2e carte du croupier.
+        Si croupier a aussi 21 → égalité.
+        Sinon → le joueur gagne avec un Blackjack.
+        Fin de la manche
 
 
 Etape 3 Tour croupier
