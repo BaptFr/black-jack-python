@@ -10,38 +10,41 @@ Etape 2  Interactions du joueurs
    *** - Stand
 ****Affichage basique Pygame des actions
 Reaction du jeu après action:
-    Tirage
-    Si joueur a 21 directement :
-        Révéler la 2e carte du croupier.
-        Si croupier a aussi 21 → égalité.
-        Sinon → le joueur gagne avec un Blackjack.
-        Fin de la manche
+    ***Tirage
+    ***Logique contôle21BJ joueur
+    Révéler la 2e carte du croupier.
+    Ajouter logique contrôle21BJ pour croupier main complète
+    Si BJ logique controle21BJ
+
+(logique du controle 21BJ peut être lancée pour retournage carte croupier + chaque tirage carte)
+
+Etape 3  Si non BJ continue logique actions bouton Joueur
 
 
-Etape 3 Tour croupier
+Etape 4 Tour croupier
 Automatiser tourcroupier après joueur
 Logique du jeu , conditions calcul de l'AS > 21 = 1 ...
 
 
-Etape 4 Fin de manche / résultat
+Etape 5 Fin de manche / résultat
 ajouter fonctionnalité Max 21, Defaite / blackjack ...
 
 
-Etape 5 Relancement de la partie
+Etape 6 Relancement de la partie
 Relancer nouveau tirage
 logique de consomamtion des cartes, nombre de paquets,  pour comptage ??
 
 
-Etape 6 graphique/ style :
+Etape 7 graphique/ style :
 - Fond tapis
 - Style des cartes
 - Sons ?
 
 
-Etape 7 fonctionnalité sup : DOUBLE / SPLIT
+Etape 8 fonctionnalité sup : DOUBLE / SPLIT
 
 
-Etape 8 Jetons ?
+Etape 9 Jetons ?
 
 
-Etape 9 l'option compteur de carte ?
+Etape 10 l'option compteur de carte ?
