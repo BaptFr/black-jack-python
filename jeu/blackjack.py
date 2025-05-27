@@ -9,8 +9,8 @@ class Carte:
         return f"{self.valeur} de {self.couleur}"
 
 
+#*1 paquet de 52 cartes
 class Paquet:
-    #Création paquet de cartes x52
     def __init__(self):
         couleurs = ["Coeur", "Carreau", "Trèfle", "Pique"]
         valeurs = [ "2", "3", "4", "5", "6", "7", "8", "9", "10", "V", "D", "R", "As"]
@@ -20,22 +20,15 @@ class Paquet:
         for couleur in couleurs:
             for valeur in valeurs:
                 self.cartes.append(Carte(valeur, couleur))
-        #mélange aléat. liste
         random.shuffle(self.cartes)
 
-
-    #Style des cartes (pygame rgba)
     def style_carte(self, carte):
         if carte.couleur in["Coeur", "Carreau"]:
             return{"color": (255, 0, 0)}
         return{"color": (0,0,0)} #else
 
-
-    # Fonction tirage d'une carte
     def tirer(self):
         return self.cartes.pop()
-
-
 
 class Compteur:
     def __init__(self):
@@ -57,7 +50,6 @@ class Compteur:
     def mise_a_j_valeur_main(self, jeu):
         self.valeur_joueur = self.calcul_valeur_main(jeu.joueur)
         self.valeur_croupier = self.calcul_valeur_main(jeu.croupier)
-        return self.valeur_joueur
 
     def verification_black_jack(self, jeu):
         self.mise_a_j_valeur_main(jeu)
@@ -76,7 +68,6 @@ class Compteur:
 
 
 class Jeu:
-    #contient les mains
     def __init__(self):
         self.joueur = []
         self.croupier = []
@@ -87,9 +78,19 @@ class Jeu:
         print(f"Main Croupier: {self.compteur.valeur_croupier}")
         print(f"Main Joueur: {self.compteur.valeur_joueur}")
 
-    #Tirage de carte via le bouton joueur
     def  tirer_carte_joueur(self):
         carte = self.paquet.tirer()
         self.joueur.append(carte)
         self.compteur.mise_a_j_valeur_main(self)
 
+    def  tirer_carte_croupier(self):
+        carte = self.paquet.tirer()
+        self.croupier.append(carte)
+        self.compteur.mise_a_j_valeur_main(self)
+
+class ControleurJeu:
+    def __init__(self, jeu):
+        self.jeu = jeu
+        self.tour_joueur_fini = False
+        self.jeu_fini = False
+        self.message_jeu_fini = " "

@@ -10,12 +10,13 @@ font = pygame.font.SysFont("Arial", 24)
 
 jeu = Jeu()
 jeu_fini = False
+tour_joueur_fini = False
 message_fin_tour = ""
 
 
 
 ## TIRAGE DES CARTES ##
-    # Ordre joueur -> croupier (x2)
+# Ordre joueur -> croupier (x2)
 for _ in range (2):
     carte_joueur = jeu.paquet.tirer()
     jeu.joueur.append(carte_joueur)
@@ -26,7 +27,8 @@ for _ in range (2):
 
 # maj compteur main
 jeu.compteur.mise_a_j_valeur_main(jeu)
-#vérif scores joueur/croupier
+
+#vérif scores joueur/croupier --> BASCULER EN CLASSEs
 verif_blackjack = jeu.compteur.verification_black_jack(jeu)
 
 if verif_blackjack == "blackjack_egalité":
@@ -123,10 +125,16 @@ while running:
             running = False
 
         #SI tirage joueur
-        elif event.type == pygame.MOUSEBUTTONDOWN:   #Clique dans la fenetre
-            if bouton_tirer.collidepoint(event.pos):  # collidepoint() méthode, eventpos = coordonnées Si click dans le rectangle bouton tirer
-                jeu.tirer_carte_joueur()
-        besoin_rafraichissement = True
+        elif event.type == pygame.MOUSEBUTTONDOWN: #Clique dans la fenetre
+            if not tour_joueur_fini:
+                if bouton_tirer.collidepoint(event.pos):  # collidepoint() méthode, eventpos = coordonnées Si click dans le rectangle bouton tirer
+                    jeu.tirer_carte_joueur()
+                    besoin_rafraichissement = True
+                    if  > 21:
+                        jeu_fini = True
+                elif bouton_rester.collidepoint(event.pos):
+                    tour_joueur_fini = True
+                    besoin_rafraichissement
 
     #Limite en FPS:
     clock.tick(10)
