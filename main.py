@@ -1,18 +1,27 @@
 import pygame
 pygame.init()
 import sys
-from jeu.blackjack import Jeu, Paquet
+
+from jeu.partie import Partie
+from jeu.controleur import Controleur
+from jeu.paquet import Paquet
+from jeu.compteur import Compteur
+from jeu.cartes import Carte
+
+
+jeu = Partie()
+controleur = Controleur(jeu)
+
 
 # pygame config
 screen= pygame.display.set_mode((800, 600))
 pygame.display.set_caption(" BLACKJACK ")
 font = pygame.font.SysFont("Arial", 24)
 
-jeu = Jeu()
+
 jeu_fini = False
 tour_joueur_fini = False
 message_fin_tour = ""
-
 
 
 ## TIRAGE DES CARTES ##
@@ -40,9 +49,6 @@ elif verif_blackjack == "blackjack_joueur":
 elif verif_blackjack == "blackjack_croupier":
     jeu_fini = True
     message_fin_tour = "BLACKJACK croupier - Vous avez perdu"
-
-
-
 
 
 #AFFICHAGE  style cartes / Fonction enum
@@ -115,7 +121,7 @@ while running:
         pygame.display.flip()
         besoin_rafraichissement = False  #blocage rafraichissement inaction
 
-    if jeu_fini:
+    if controleur.jeu_fini:
         affichage_message_fin = font.render(message_fin_tour, True, (255, 0, 0))
         screen.blit(affichage_message_fin, (100, 300))
 
@@ -127,15 +133,11 @@ while running:
         #SI tirage joueur
         elif event.type == pygame.MOUSEBUTTONDOWN: #Clique dans la fenetre
             if not tour_joueur_fini:
-                if bouton_tirer.collidepoint(event.pos):  # collidepoint() méthode, eventpos = coordonnées Si click dans le rectangle bouton tirer
+                if bouton_tirer.collidepoint(event.pos) and not controleur.tour_joueur_fini:  # collidepoint() méthode, eventpos = coordonnées Si click dans le rectangle bouton tirer
                     jeu.tirer_carte_joueur()
+                    controleur.controle_bust_joueur()
                     besoin_rafraichissement = True
-                    if  > 21:
-                        jeu_fini = True
-                elif bouton_rester.collidepoint(event.pos):
-                    tour_joueur_fini = True
-                    besoin_rafraichissement
 
-    #Limite en FPS:
+         #Limite en FPS:
     clock.tick(10)
 
