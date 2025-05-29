@@ -21,16 +21,4 @@ class Compteur:
         self.valeur_joueur = self.calcul_valeur_main(jeu.joueur)
         self.valeur_croupier = self.calcul_valeur_main(jeu.croupier)
 
-    def verification_black_jack(self, jeu):
-        self.mise_a_j_valeur_main(jeu)
-        main_joueur = self.valeur_joueur
-        main_croupier = self.valeur_croupier
 
-        if main_joueur == 21 and main_croupier ==21:
-            return "blackjack_egalité"
-        if main_joueur == 21:
-            return"blackjack_joueur"
-        if main_croupier == 21:
-            return "blackjack_croupier"
-        else:
-            return "continuer"

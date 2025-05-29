@@ -38,17 +38,7 @@ for _ in range (2):
 jeu.compteur.mise_a_j_valeur_main(jeu)
 
 #vérif scores joueur/croupier --> BASCULER EN CLASSEs
-verif_blackjack = jeu.compteur.verification_black_jack(jeu)
 
-if verif_blackjack == "blackjack_egalité":
-    jeu_fini = True
-    message_fin_tour = "ÉGALITÉ"
-elif verif_blackjack == "blackjack_joueur":
-    jeu_fini = True
-    message_fin_tour = "BLACKJACK Félicitations vous avez gagné !"
-elif verif_blackjack == "blackjack_croupier":
-    jeu_fini = True
-    message_fin_tour = "BLACKJACK croupier - Vous avez perdu"
 
 
 #AFFICHAGE  style cartes / Fonction enum
@@ -99,11 +89,14 @@ while running:
     #Boutons d'actions rectangle
     bouton_tirer = pygame.Rect(600, 400, 100, 40)
     bouton_rester = pygame.Rect(600, 450, 100, 40)
+    message_victoire = pygame.Rect(400, 200, 100, 40)
+    message_defaite = pygame.Rect(400, 200, 100, 40)
+
 
     if besoin_rafraichissement:
-        #Affichage f position cartes croupier et joueur | Boolean masquee pour la condition
-        afficher_cartes(jeu.croupier, 50, masquee=True)
+        afficher_cartes(jeu.croupier, 50, masquee=False if controleur.stand_joueur else True)
         afficher_cartes(jeu.joueur, 375)
+        reveler_tout_croupier = controleur.stand_joueur
 
         texte_compteur_joueur = font.render(f"Joueur: {jeu.compteur.valeur_joueur}", True,(0, 0, 0))
         texte_compteur_croupier = font.render(afficher_score_croupier_une_carte(jeu, masquee=True), True, (0, 0, 0))
@@ -135,7 +128,12 @@ while running:
             if not tour_joueur_fini:
                 if bouton_tirer.collidepoint(event.pos) and not controleur.tour_joueur_fini:  # collidepoint() méthode, eventpos = coordonnées Si click dans le rectangle bouton tirer
                     jeu.tirer_carte_joueur()
-                    controleur.controle_bust_joueur()
+                    controleur.controle_fin_jeu()
+                    besoin_rafraichissement = True
+                elif bouton_rester.collidepoint(event.pos) and not controleur.tour_joueur_fini:
+                    tour_joueur_fini = True
+                    controleur.controle_fin_jeu()
+                    afficher_cartes(jeu.croupier, masquee=False)
                     besoin_rafraichissement = True
 
          #Limite en FPS:
