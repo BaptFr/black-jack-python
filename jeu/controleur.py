@@ -1,3 +1,4 @@
+from .compteur import Compteur
 
 class Controleur:
     def __init__(self, jeu):
@@ -10,7 +11,6 @@ class Controleur:
         self.message_jeu_fini = " "
 
     def controle_fin_jeu(self):
-
         #BLACKJACKs
         if self.jeu.compteur.valeur_joueur > 21:
             self.tour_joueur_fini = True
@@ -28,7 +28,7 @@ class Controleur:
         #Comparaison des scores
         elif self.stand_croupier and self.stand_joueur:
             self.jeu_fini = True
-            if self.jeu.compteur.valeur_joueur > self.jeu.compteur.valeur_joueur:
+            if self.compteur.valeur_joueur > self.jeu.compteur.valeur_joueur:
                 self.message_jeu_fini = "VOUS AVEZ GAGNÉ"
                 print("VOUS AVEZ GAGNÉ")
             elif self.jeu.compteur.valeur_joueur < self.jeu.compteur.valeur_joueur:

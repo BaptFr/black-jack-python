@@ -3,14 +3,15 @@ pygame.init()
 import sys
 
 from jeu.partie import Partie
-from jeu.controleur import Controleur
+from jeu.cartes import Carte
 from jeu.paquet import Paquet
 from jeu.compteur import Compteur
-from jeu.cartes import Carte
-
+from jeu.controleur import Controleur
+from jeu.tour_croupier import TourCroupier
 
 jeu = Partie()
 controleur = Controleur(jeu)
+tour_croupier = TourCroupier(jeu, controleur)
 
 
 # pygame config
@@ -21,6 +22,7 @@ font = pygame.font.SysFont("Arial", 24)
 
 jeu_fini = False
 tour_joueur_fini = False
+tour_croupier_fini = False
 message_fin_tour = ""
 
 
@@ -99,12 +101,19 @@ while running:
             if not tour_joueur_fini:
                 if bouton_tirer.collidepoint(event.pos) and not controleur.tour_joueur_fini:  # collidepoint() méthode, eventpos = coordonnées Si click dans le rectangle bouton tirer
                     jeu.tirer_carte_joueur()
+                    print("joueur tire une carte")
                     controleur.controle_fin_jeu()
                     besoin_rafraichissement = True
                 elif bouton_rester.collidepoint(event.pos) and not controleur.tour_joueur_fini:
-                    tour_joueur_fini = True
                     controleur.controle_fin_jeu()
+                    print("joueur reste / maintenant au croupier")
+            if  tour_joueur_fini:
+                if tour_joueur_fini and not controleur.tour_croupier_fini:
+                    tour_croupier.action_croupier_etape()
                     besoin_rafraichissement = True
+                elif tour_joueur_fini and controleur.tour_croupier_fini:
+                    controleur.controle_fin_jeu()
+
 
     #màj de l'affichage
     if besoin_rafraichissement:
@@ -114,7 +123,6 @@ while running:
         #Cartes
         afficher_cartes(jeu.croupier, 50, masquee=not tour_joueur_fini)
         afficher_cartes(jeu.joueur, 375)
-        reveler_tout_croupier = controleur.stand_joueur
 
         #Scores
         texte_compteur_joueur = font.render(f"Joueur: {jeu.compteur.valeur_joueur}", True,(0, 0, 0))
@@ -132,7 +140,7 @@ while running:
         screen.blit(texte_rester, (bouton_rester.x + 25, bouton_rester.y + 5))
 
         #Message de fin
-        if controleur.controle_fin_jeu:
+        if controleur.jeu_fini:
             affichage_message_fin = font.render(controleur.message_jeu_fini, True, (220, 0, 0))
             screen.blit(affichage_message_fin, (100, 200))
 
