@@ -4,7 +4,7 @@ Base DU JEU
 ***Compteur positionnner croupier en haut à gauche, joueuru en bas à droite****
 
 
-Etape 2  Interactions du joueurs
+****Etape 2  Interactions du joueurs
 ****Ajouter actions joueur :
    *** - Hit
    *** - Stand
@@ -12,27 +12,31 @@ Etape 2  Interactions du joueurs
 Reaction du jeu après action:
     ***Tirage
     ***Logique contôle21BJ joueur
-    Révéler la 2e carte du croupier.
-    Ajouter logique contrôle21BJ pour croupier main complète
-    Si BJ logique controle21BJ
+    !!!!Révéler la 2e carte du croupier.( OK après le stand. Ajouer après défaite)!!!!
+    **Ajouter logique contrôle21BJ pour croupier main complète
+    **Si BJ logique controle21BJ
 
 (logique du controle 21BJ peut être lancée pour retournage carte croupier + chaque tirage carte)
 
-Etape 3  Si non BJ continue logique actions bouton Joueur
+****Etape 3  Si non BJ continue logique actions bouton Joueur
+Relancer nouveau tirage avec bouton
+
 
 
 Etape 4 Tour croupier
-Automatiser tourcroupier après joueur
-Logique du jeu , conditions calcul de l'AS > 21 = 1 ...
+Automatiser tour croupier après joueur
+Logique du jeu du croupier pour son tour
+    logique <16 et > 16
+
 
 
 Etape 5 Fin de manche / résultat
-ajouter fonctionnalité Max 21, Defaite / blackjack ...
+Logique d'alternance des tours ok ?
+Affichage de tous les messages: victoire/défaite  + BJvictoire/Défaite
 
 
 Etape 6 Relancement de la partie
-Relancer nouveau tirage
-logique de consomamtion des cartes, nombre de paquets,  pour comptage ??
+logique de consomamtion des cartes, nombre de paquets,  pour comptage ?? avec le drop ? 
 
 
 Etape 7 graphique/ style :

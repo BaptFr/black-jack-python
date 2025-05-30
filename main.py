@@ -83,9 +83,6 @@ running = True
 
     #Jeu actif - cycle principal pygame
 while running:
-    #Effacer écran
-    screen.fill((255, 255, 255))
-
     #Boutons d'actions rectangle
     bouton_tirer = pygame.Rect(600, 400, 100, 40)
     bouton_rester = pygame.Rect(600, 450, 100, 40)
@@ -93,37 +90,11 @@ while running:
     message_defaite = pygame.Rect(400, 200, 100, 40)
 
 
-    if besoin_rafraichissement:
-        afficher_cartes(jeu.croupier, 50, masquee=False if controleur.stand_joueur else True)
-        afficher_cartes(jeu.joueur, 375)
-        reveler_tout_croupier = controleur.stand_joueur
-
-        texte_compteur_joueur = font.render(f"Joueur: {jeu.compteur.valeur_joueur}", True,(0, 0, 0))
-        texte_compteur_croupier = font.render(afficher_score_croupier_une_carte(jeu, masquee=True), True, (0, 0, 0))
-        screen.blit(texte_compteur_joueur, (50, 375))
-        screen.blit(texte_compteur_croupier, (50, 50))
-
-        pygame.draw.rect(screen, (0, 200, 0), bouton_tirer)
-        pygame.draw.rect(screen, (200, 0, 0), bouton_rester)
-        texte_tirer = font.render("Tirer", True, (0, 0, 0))
-        texte_rester = font.render("Rester", True, (0, 0, 0))
-        screen.blit(texte_tirer, (bouton_tirer.x + 25, bouton_tirer.y + 5))
-        screen.blit(texte_rester, (bouton_rester.x + 25, bouton_rester.y + 5))
-
-        # Màj affichage écran
-        pygame.display.flip()
-        besoin_rafraichissement = False  #blocage rafraichissement inaction
-
-    if controleur.jeu_fini:
-        affichage_message_fin = font.render(message_fin_tour, True, (255, 0, 0))
-        screen.blit(affichage_message_fin, (100, 300))
-
     ##GESTION D'EVENEMENTS
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-        #SI tirage joueur
         elif event.type == pygame.MOUSEBUTTONDOWN: #Clique dans la fenetre
             if not tour_joueur_fini:
                 if bouton_tirer.collidepoint(event.pos) and not controleur.tour_joueur_fini:  # collidepoint() méthode, eventpos = coordonnées Si click dans le rectangle bouton tirer
@@ -133,9 +104,42 @@ while running:
                 elif bouton_rester.collidepoint(event.pos) and not controleur.tour_joueur_fini:
                     tour_joueur_fini = True
                     controleur.controle_fin_jeu()
-                    afficher_cartes(jeu.croupier, masquee=False)
                     besoin_rafraichissement = True
 
-         #Limite en FPS:
+    #màj de l'affichage
+    if besoin_rafraichissement:
+        #Efface l'écran
+        screen.fill((255, 255, 255))
+
+        #Cartes
+        afficher_cartes(jeu.croupier, 50, masquee=not tour_joueur_fini)
+        afficher_cartes(jeu.joueur, 375)
+        reveler_tout_croupier = controleur.stand_joueur
+
+        #Scores
+        texte_compteur_joueur = font.render(f"Joueur: {jeu.compteur.valeur_joueur}", True,(0, 0, 0))
+        texte_compteur_croupier = font.render(
+            afficher_score_croupier_une_carte(jeu, masquee=not tour_joueur_fini), True, (0, 0, 0))
+        screen.blit(texte_compteur_joueur, (50, 375))
+        screen.blit(texte_compteur_croupier, (50, 50))
+
+        #Boutons
+        pygame.draw.rect(screen, (0, 200, 0), bouton_tirer)
+        pygame.draw.rect(screen, (200, 0, 0), bouton_rester)
+        texte_tirer = font.render("Tirer", True, (0, 0, 0))
+        texte_rester = font.render("Rester", True, (0, 0, 0))
+        screen.blit(texte_tirer, (bouton_tirer.x + 25, bouton_tirer.y + 5))
+        screen.blit(texte_rester, (bouton_rester.x + 25, bouton_rester.y + 5))
+
+        #Message de fin
+        if controleur.controle_fin_jeu:
+            affichage_message_fin = font.render(controleur.message_jeu_fini, True, (220, 0, 0))
+            screen.blit(affichage_message_fin, (100, 200))
+
+        # Màj affichage écran
+        pygame.display.flip()
+        besoin_rafraichissement = False  #blocage rafraichissement inaction
+
+        #Limite en FPS:
     clock.tick(10)
 
