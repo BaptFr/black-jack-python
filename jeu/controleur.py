@@ -28,7 +28,7 @@ class Controleur:
         #Comparaison des scores
         elif self.stand_croupier and self.stand_joueur:
             self.jeu_fini = True
-            if self.compteur.valeur_joueur > self.jeu.compteur.valeur_croupier:
+            if self.jeu.compteur.valeur_joueur > self.jeu.compteur.valeur_croupier:
                 self.message_jeu_fini = "VOUS AVEZ GAGNÉ"
                 print("VOUS AVEZ GAGNÉ")
             elif self.jeu.compteur.valeur_joueur < self.jeu.compteur.valeur_croupier:

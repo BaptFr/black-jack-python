@@ -2,7 +2,7 @@
 from .paquet import Paquet
 from .compteur import Compteur
 
-class Partie:
+class Tirage:
     def __init__(self):
         self.joueur = []
         self.croupier = []
