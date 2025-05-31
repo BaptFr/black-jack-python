@@ -19,13 +19,6 @@ screen= pygame.display.set_mode((800, 600))
 pygame.display.set_caption(" BLACKJACK ")
 font = pygame.font.SysFont("Arial", 24)
 
-
-jeu_fini = False
-tour_joueur_fini = False
-tour_croupier_fini = False
-message_fin_tour = ""
-
-
 ## TIRAGE DES CARTES ##
 # Ordre joueur -> croupier (x2)
 for _ in range (2):
@@ -38,9 +31,6 @@ for _ in range (2):
 
 # maj compteur main
 jeu.compteur.mise_a_j_valeur_main(jeu)
-
-#vérif scores joueur/croupier --> BASCULER EN CLASSEs
-
 
 
 #AFFICHAGE  style cartes / Fonction enum
@@ -97,22 +87,24 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-        elif event.type == pygame.MOUSEBUTTONDOWN: #Clique dans la fenetre
-            if not tour_joueur_fini:
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if not controleur.tour_joueur_fini:
                 if bouton_tirer.collidepoint(event.pos) and not controleur.tour_joueur_fini:  # collidepoint() méthode, eventpos = coordonnées Si click dans le rectangle bouton tirer
                     jeu.tirer_carte_joueur()
                     print("joueur tire une carte")
                     controleur.controle_fin_jeu()
                     besoin_rafraichissement = True
                 elif bouton_rester.collidepoint(event.pos) and not controleur.tour_joueur_fini:
+                    controleur.tour_joueur_fini = True
+                    controleur.stand_joueur =True
                     controleur.controle_fin_jeu()
                     print("joueur reste / maintenant au croupier")
-            if  tour_joueur_fini:
-                if tour_joueur_fini and not controleur.tour_croupier_fini:
-                    tour_croupier.action_croupier_etape()
-                    besoin_rafraichissement = True
-                elif tour_joueur_fini and controleur.tour_croupier_fini:
-                    controleur.controle_fin_jeu()
+                if  controleur.tour_joueur_fini:
+                    if controleur.tour_joueur_fini and not controleur.tour_croupier_fini:
+                        tour_croupier.action_croupier_etape()
+                        besoin_rafraichissement = True
+                    elif controleur.tour_joueur_fini and controleur.tour_croupier_fini:
+                        controleur.controle_fin_jeu()
 
 
     #màj de l'affichage
@@ -121,13 +113,13 @@ while running:
         screen.fill((255, 255, 255))
 
         #Cartes
-        afficher_cartes(jeu.croupier, 50, masquee=not tour_joueur_fini)
+        afficher_cartes(jeu.croupier, 50, masquee=not controleur.tour_joueur_fini)
         afficher_cartes(jeu.joueur, 375)
 
         #Scores
         texte_compteur_joueur = font.render(f"Joueur: {jeu.compteur.valeur_joueur}", True,(0, 0, 0))
         texte_compteur_croupier = font.render(
-            afficher_score_croupier_une_carte(jeu, masquee=not tour_joueur_fini), True, (0, 0, 0))
+            afficher_score_croupier_une_carte(jeu, masquee=not controleur.tour_joueur_fini), True, (0, 0, 0))
         screen.blit(texte_compteur_joueur, (50, 375))
         screen.blit(texte_compteur_croupier, (50, 50))
 
