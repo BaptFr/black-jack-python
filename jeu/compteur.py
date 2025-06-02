@@ -17,8 +17,8 @@ class Compteur:
             total_main = total_main + self.valeurs_cartes[valeur]
         return total_main
 
-    def mise_a_j_valeur_main(self, jeu):
-        self.valeur_joueur = self.calcul_valeur_main(jeu.joueur)
-        self.valeur_croupier = self.calcul_valeur_main(jeu.croupier)
+    def mise_a_j_valeur_main(self, partie):
+        self.valeur_joueur = self.calcul_valeur_main(partie.joueur)
+        self.valeur_croupier = self.calcul_valeur_main(partie.croupier)
 
 

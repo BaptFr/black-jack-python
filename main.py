@@ -8,33 +8,18 @@ from jeu.paquet import Paquet
 from jeu.compteur import Compteur
 from jeu.controleur import Controleur
 from jeu.tour_croupier import TourCroupier
+from jeu.gestion_partie import GestionPartie
 
 jeu = Tirage()
 controleur = Controleur(jeu)
 tour_croupier = TourCroupier(jeu, controleur)
+gestion_partie = GestionPartie()
 
 
 # pygame config
 screen= pygame.display.set_mode((800, 600))
 pygame.display.set_caption(" BLACKJACK ")
 font = pygame.font.SysFont("Arial", 24)
-
-
-def restart():
-    global jeu, controleur, tour_croupier
-    
-    controleur = Controleur(jeu)
-    tour_croupier = TourCroupier(jeu, controleur)
-
-## TIRAGE DES CARTES ##
-# Ordre joueur -> croupier (x2)
-for _ in range (2):
-    carte_joueur = jeu.paquet.tirer()
-    jeu.joueur.append(carte_joueur)
-
-    carte_croupier = jeu.paquet.tirer()
-    jeu.croupier.append(carte_croupier)
-
 
 # maj compteur main
 jeu.compteur.mise_a_j_valeur_main(jeu)
@@ -53,9 +38,9 @@ def afficher_cartes(cartes, y_position, masquee=False):
             screen.blit(texte, (200 + i*120, y_position)) # i ajout décalage 2nde carte
 
 
-def afficher_score_croupier_une_carte(jeu, masquee):
-        if masquee and len(jeu.croupier) > 0:
-            premiere_carte = jeu.croupier[0]
+def afficher_score_croupier_une_carte(partie, masquee):
+        if masquee and len(partie.croupier) > 0:
+            premiere_carte = partie.croupier[0]
             valeur_premiere_carte = jeu.compteur.valeurs_cartes[premiere_carte.valeur]
             return f"Croupier: {valeur_premiere_carte}"
         else:
@@ -104,16 +89,13 @@ while running:
                     controleur.stand_joueur =True
                     controleur.controle_fin_jeu()
                     print("joueur reste / maintenant au croupier")
-                if  controleur.tour_joueur_fini:
-                    if controleur.tour_joueur_fini and not controleur.tour_croupier_fini:
-                        tour_croupier.action_croupier_etape()
-                        besoin_rafraichissement = True
-                    elif controleur.tour_joueur_fini and controleur.tour_croupier_fini:
-                        controleur.controle_fin_jeu()
-            elif not controleur.jeu_fini:
-                if bouton_restart.collidepoint(event.pos):
+                    tour_croupier.action_croupier_etape()
+                    besoin_rafraichissement = True
+                elif controleur.tour_joueur_fini and controleur.tour_croupier_fini:
+                    controleur.controle_fin_jeu()
+                elif bouton_restart.collidepoint(event.pos):
                     print("nouvelle partie")
-                    restart()
+                    gestion_partie.nouvelle_partie()
                     besoin_rafraichissement = True
 
 
@@ -128,8 +110,7 @@ while running:
 
         #Scores
         texte_compteur_joueur = font.render(f"Joueur: {jeu.compteur.valeur_joueur}", True,(0, 0, 0))
-        texte_compteur_croupier = font.render(
-            afficher_score_croupier_une_carte(jeu, masquee=not controleur.tour_joueur_fini), True, (0, 0, 0))
+        texte_compteur_croupier = font.render(afficher_score_croupier_une_carte(jeu, masquee=not controleur.tour_joueur_fini), True, (0, 0, 0))
         screen.blit(texte_compteur_joueur, (50, 375))
         screen.blit(texte_compteur_croupier, (50, 50))
 
@@ -139,17 +120,16 @@ while running:
         pygame.draw.rect(screen, (255, 255, 255), bouton_restart)
         texte_tirer = font.render("Tirer", True, (0, 0, 0))
         texte_rester = font.render("Rester", True, (0, 0, 0))
-        texte_restart = font.render("Rejouer", True, (0, 0, 0))
         screen.blit(texte_tirer, (bouton_tirer.x + 25, bouton_tirer.y + 5))
         screen.blit(texte_rester, (bouton_rester.x + 25, bouton_rester.y + 5))
-        screen.blit(texte_restart, (bouton_restart.x + 25, bouton_restart.y + 5))
-
 
         #Message de fin
         if controleur.jeu_fini:
             affichage_message_fin = font.render(controleur.message_jeu_fini, True, (220, 0, 0))
             screen.blit(affichage_message_fin, (100, 200))
-            affichage_bouton_restart = font.render(texte_restart)
+            texte_restart = font.render("Rejouer", True, (0, 0, 0))
+            screen.blit(texte_restart, (bouton_restart.x + 25, bouton_restart.y + 5))
+
 
         # Màj affichage écran
         pygame.display.flip()

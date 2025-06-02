@@ -9,6 +9,10 @@ class Tirage:
         self.compteur = Compteur()
         self.paquet = Paquet()
 
+        for _ in range(2):
+            self.tirer_carte_joueur()
+            self.tirer_carte_croupier()
+
     def afficher_valeurs(self):
         print(f"Main Croupier: {self.compteur.valeur_croupier}")
         print(f"Main Joueur: {self.compteur.valeur_joueur}")
