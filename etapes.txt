@@ -1,4 +1,8 @@
-Base DU JEU
+***  = FAIT OK
+---  = A FAIRE
+
+
+***Base DU JEU
 ***Affichage compteur dans le jeu***
 ***print OK mais pas dans le jeu ***
 ***Compteur positionnner croupier en haut à gauche, joueuru en bas à droite****
@@ -12,43 +16,43 @@ Base DU JEU
 Reaction du jeu après action:
     ***Tirage
     ***Logique contôle21BJ joueur
-    !!!!Révéler la 2e carte du croupier.( OK après le stand. Ajouer après défaite)!!!!
+    ***Révéler la 2e carte du croupier.( OK après le stand. Ajouer après défaite)
     **Ajouter logique contrôle21BJ pour croupier main complète
     **Si BJ logique controle21BJ
 
 (logique du controle 21BJ peut être lancée pour retournage carte croupier + chaque tirage carte)
 
-****Etape 3  Si non BJ continue logique actions bouton Joueur
-Relancer nouveau tirage avec bouton
+***Etape 3  Si non BJ continue logique actions bouton Joueur
 
 
-
-Etape 4 Tour croupier
-Automatiser tour croupier après joueur
-Logique du jeu du croupier pour son tour
+****Etape 4 Tour croupier
+***Automatiser tour croupier après joueur
+***Logique du jeu du croupier pour son tour
     logique <16 et > 16
 
 
 
-Etape 5 Fin de manche / résultat
-Logique d'alternance des tours ok ?
-Affichage de tous les messages: victoire/défaite  + BJvictoire/Défaite
+***Etape 5 Fin de manche / résultat
+***Logique d'alternance des tours ok ?
+***Affichage de tous les messages: victoire/défaite  + BJvictoire/Défaite
 
 
-Etape 6 Relancement de la partie
-logique de consomamtion des cartes, nombre de paquets,  pour comptage ?? avec le drop ? 
+---Etape 6 Relancement de la partie
+    ---Relancer nouveau tirage avec bouton
+    ---logique de consomamtion des cartes,
+    ---nombre de paquets,
+    ---pour comptage ?? avec le drop ?
 
 
-Etape 7 graphique/ style :
-- Fond tapis
-- Style des cartes
-- Sons ?
+---Etape 7 graphique/ style :
+--- Fond tapis
+--- Style des cartes
+--- Sons ?
+
+---Etape 8: ----fonctionnalité sup : DOUBLE / SPLIT
 
 
-Etape 8 fonctionnalité sup : DOUBLE / SPLIT
+---Etape 9: ---Jetons ?
 
 
-Etape 9 Jetons ?
-
-
-Etape 10 l'option compteur de carte ?
+---Etape 10: ---L'option compteur de carte ?
