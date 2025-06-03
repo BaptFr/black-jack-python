@@ -9,21 +9,23 @@ from jeu.compteur import Compteur
 from jeu.controleur import Controleur
 from jeu.tour_croupier import TourCroupier
 from jeu.gestion_partie import GestionPartie
+from jeu.bouton import Bouton
 
-jeu = Tirage()
-controleur = Controleur(jeu)
-tour_croupier = TourCroupier(jeu, controleur)
 gestion_partie = GestionPartie()
+gestion_partie.nouvelle_partie()
+jeu = gestion_partie.partie
+controleur = gestion_partie.controleur
+tour_croupier = gestion_partie.tour_croupier
 
 
-# pygame config
+# pygame config affichage
 screen= pygame.display.set_mode((800, 600))
 pygame.display.set_caption(" BLACKJACK ")
 font = pygame.font.SysFont("Arial", 24)
 
+
 # maj compteur main
 jeu.compteur.mise_a_j_valeur_main(jeu)
-
 
 #AFFICHAGE  style cartes / Fonction enum
 def afficher_cartes(cartes, y_position, masquee=False):
@@ -37,7 +39,6 @@ def afficher_cartes(cartes, y_position, masquee=False):
             texte = font.render(str(carte), True, couleur_texte)
             screen.blit(texte, (200 + i*120, y_position)) # i ajout décalage 2nde carte
 
-
 def afficher_score_croupier_une_carte(partie, masquee):
         if masquee and len(partie.croupier) > 0:
             premiere_carte = partie.croupier[0]
@@ -45,6 +46,8 @@ def afficher_score_croupier_une_carte(partie, masquee):
             return f"Croupier: {valeur_premiere_carte}"
         else:
             return f"Croupier: {jeu.compteur.valeur_croupier}"
+
+
 
 
 ## TEST TERMINAL  ##
@@ -55,36 +58,39 @@ print(jeu.compteur.valeur_joueur)
 
 
 ## GESTION PARAMETRES AFFICHAGE PYGAME ##
-    # GESTION du rafraichissement: action/inaction
-besoin_rafraichissement = True
+bouton_tirer = Bouton(600, 400, 100, 40, "Tirer", (0, 200, 0), (0, 0, 0), font, visible=True)
+bouton_rester = Bouton(600, 450, 100, 40, "Rester", (200, 0, 0), (0, 0, 0), font,visible=True)
+bouton_restart = Bouton(400, 150, 100, 40, "Rejouer", (255, 255, 255), (0, 0, 0), font, visible = False)
 
-    #clock framerate pour limiter
+#GESTION du rafraichissement: action/inaction
+#clock framerate pour limiter
 clock = pygame.time.Clock()
 running = True
+besoin_rafraichissement = True
 
-    #Jeu actif - cycle principal pygame
+#Jeu actif - cycle principal pygame
 while running:
-    #Boutons d'actions rectangle
-    bouton_tirer = pygame.Rect(600, 400, 100, 40)
-    bouton_rester = pygame.Rect(600, 450, 100, 40)
-    message_victoire = pygame.Rect(400, 200, 100, 40)
-    message_defaite = pygame.Rect(400, 200, 100, 40)
-    bouton_restart= pygame.Rect(400, 150, 100, 40)
-
-
     ##GESTION D'EVENEMENTS
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            if not controleur.tour_joueur_fini:
-                if bouton_tirer.collidepoint(event.pos) and not controleur.tour_joueur_fini:  # collidepoint() méthode, eventpos = coordonnées Si click dans le rectangle bouton tirer
+            if controleur.jeu_fini and bouton_restart.est_clique(event.pos):
+                print("Nouvelle partie lancée")
+                gestion_partie.nouvelle_partie()
+                jeu = gestion_partie.partie
+                controleur = gestion_partie.controleur
+                tour_croupier = gestion_partie.tour_croupier
+                besoin_rafraichissement = True
+
+            elif not controleur.tour_joueur_fini:
+                if bouton_tirer.est_clique(event.pos) and not controleur.tour_joueur_fini:  # collidepoint() méthode, eventpos = coordonnées Si click dans le rectangle bouton tirer
                     jeu.tirer_carte_joueur()
                     print("joueur tire une carte")
                     controleur.controle_fin_jeu()
                     besoin_rafraichissement = True
-                elif bouton_rester.collidepoint(event.pos) and not controleur.tour_joueur_fini:
+                elif bouton_rester.est_clique(event.pos) and not controleur.tour_joueur_fini:
                     controleur.tour_joueur_fini = True
                     controleur.stand_joueur =True
                     controleur.controle_fin_jeu()
@@ -93,13 +99,8 @@ while running:
                     besoin_rafraichissement = True
                 elif controleur.tour_joueur_fini and controleur.tour_croupier_fini:
                     controleur.controle_fin_jeu()
-                elif bouton_restart.collidepoint(event.pos):
-                    print("nouvelle partie")
-                    gestion_partie.nouvelle_partie()
-                    besoin_rafraichissement = True
 
-
-    #màj de l'affichage
+    ##MAJ DE L'AFFICHAGE/Chaque action
     if besoin_rafraichissement:
         #Efface l'écran
         screen.fill((255, 255, 255))
@@ -114,23 +115,23 @@ while running:
         screen.blit(texte_compteur_joueur, (50, 375))
         screen.blit(texte_compteur_croupier, (50, 50))
 
-        #Boutons
-        pygame.draw.rect(screen, (0, 200, 0), bouton_tirer)
-        pygame.draw.rect(screen, (200, 0, 0), bouton_rester)
-        pygame.draw.rect(screen, (255, 255, 255), bouton_restart)
-        texte_tirer = font.render("Tirer", True, (0, 0, 0))
-        texte_rester = font.render("Rester", True, (0, 0, 0))
-        screen.blit(texte_tirer, (bouton_tirer.x + 25, bouton_tirer.y + 5))
-        screen.blit(texte_rester, (bouton_rester.x + 25, bouton_rester.y + 5))
-
-        #Message de fin
+        #Fin: Messages + bouton restart
         if controleur.jeu_fini:
-            affichage_message_fin = font.render(controleur.message_jeu_fini, True, (220, 0, 0))
-            screen.blit(affichage_message_fin, (100, 200))
-            texte_restart = font.render("Rejouer", True, (0, 0, 0))
-            screen.blit(texte_restart, (bouton_restart.x + 25, bouton_restart.y + 5))
+            message_fin = font.render(controleur.message_jeu_fini, True, (200, 0, 0))
+            screen.blit(message_fin, (100, 200))
+            bouton_restart.visible = True
+            bouton_tirer.visible = False
+            bouton_rester.visible = False
+        else:
+            bouton_restart.visible = False
+            bouton_tirer.visible = True
+            bouton_rester.visible = True
 
 
+        #Boutons
+        bouton_tirer.dessiner(screen)
+        bouton_rester.dessiner(screen)
+        bouton_restart.dessiner(screen)
         # Màj affichage écran
         pygame.display.flip()
         besoin_rafraichissement = False  #blocage rafraichissement inaction

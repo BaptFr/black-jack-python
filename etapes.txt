@@ -38,11 +38,8 @@ Reaction du jeu après action:
 
 
 ---Etape 6 Relancement de la partie
-    ---Relancer nouveau tirage avec bouton
-    ---logique de consomamtion des cartes,
-    ---nombre de paquets,
-    ---pour comptage ?? avec le drop ?
-
+    ---Relancer nouveau tirage avec bouton restart
+  
 
 ---Etape 7 graphique/ style :
 --- Fond tapis
@@ -52,7 +49,11 @@ Reaction du jeu après action:
 ---Etape 8: ----fonctionnalité sup : DOUBLE / SPLIT
 
 
----Etape 9: ---Jetons ?
+---Etape 9: ---Jetons mises
 
 
+Supplementaire
 ---Etape 10: ---L'option compteur de carte ?
+    ---logique de consomamtion des cartes conservées,
+    ---plus gros nombre de paquets,
+    ---pour comptage ?? avec le drop ?
