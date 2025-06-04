@@ -37,23 +37,30 @@ Reaction du jeu après action:
 ***Affichage de tous les messages: victoire/défaite  + BJvictoire/Défaite
 
 
----Etape 6 Relancement de la partie
-    ---Relancer nouveau tirage avec bouton restart
-  
+***Etape 6 Relancement de la partie
+   ***Relancer nouveau tirage avec bouton restart
 
----Etape 7 graphique/ style :
---- Fond tapis
---- Style des cartes
---- Sons ?
-
----Etape 8: ----fonctionnalité sup : DOUBLE / SPLIT
+---Etape 7  Valeur de l'AS
+    ---selon resultat 1 ou 11
 
 
----Etape 9: ---Jetons mises
+---Etape 8  Si même valeur 2 cartes de la même main
+    ---Possibilité de DOUBLE
+    ---Possibilité de SPLIT
+
+---Etape 8 Graphique/ style :
+    --- Fond tapis
+    --- Style des cartes
+    --- Sons ?
+
+---Etape 9: ----Fonctionnalité sup : DOUBLE / SPLIT
+
+
+---Etape 10: ---Jetons mises
 
 
 Supplementaire
----Etape 10: ---L'option compteur de carte ?
+---Etape 11: ---L'option compteur de carte ?
     ---logique de consomamtion des cartes conservées,
     ---plus gros nombre de paquets,
     ---pour comptage ?? avec le drop ?

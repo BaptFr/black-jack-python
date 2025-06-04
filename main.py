@@ -60,7 +60,7 @@ print(jeu.compteur.valeur_joueur)
 ## GESTION PARAMETRES AFFICHAGE PYGAME ##
 bouton_tirer = Bouton(600, 400, 100, 40, "Tirer", (0, 200, 0), (0, 0, 0), font, visible=True)
 bouton_rester = Bouton(600, 450, 100, 40, "Rester", (200, 0, 0), (0, 0, 0), font,visible=True)
-bouton_restart = Bouton(400, 150, 100, 40, "Rejouer", (255, 255, 255), (0, 0, 0), font, visible = False)
+bouton_restart = Bouton(300, 480, 200, 80, "Rejouer", (0, 0, 200), (200, 200, 200), font, visible = False)
 
 #GESTION du rafraichissement: action/inaction
 #clock framerate pour limiter
