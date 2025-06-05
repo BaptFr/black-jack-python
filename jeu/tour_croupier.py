@@ -8,7 +8,7 @@ class TourCroupier:
 
     def action_croupier_etape(self):
         now = pygame.time.get_ticks()
-        while  self.jeu.compteur.valeur_croupier < 16:
+        while  self.jeu.compteur.valeur_croupier <= 16:
             print("le croupier tire")
             self.jeu.tirer_carte_croupier()
             self.jeu.compteur.mise_a_j_valeur_main(self.jeu)

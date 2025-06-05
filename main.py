@@ -115,6 +115,7 @@ while running:
         screen.blit(texte_compteur_joueur, (50, 375))
         screen.blit(texte_compteur_croupier, (50, 50))
 
+        controleur.controle_fin_jeu()
         #Fin: Messages + bouton restart
         if controleur.jeu_fini:
             message_fin = font.render(controleur.message_jeu_fini, True, (200, 0, 0))

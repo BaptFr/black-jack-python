@@ -41,6 +41,7 @@ Reaction du jeu après action:
    ***Relancer nouveau tirage avec bouton restart
 
 ---Etape 7  Valeur de l'AS
+
     ---selon resultat 1 ou 11
 
 

@@ -1,5 +1,3 @@
-
-
 class Compteur:
     def __init__(self):
         self.valeur_joueur= 0

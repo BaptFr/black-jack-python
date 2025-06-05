@@ -18,11 +18,23 @@ class Controleur:
             self.jeu_fini = True
             self.message_jeu_fini = "Vous avez dépasse 21 - VOUS AVEZ PERDU"
             print("Vous avez dépasse 21 - VOUS AVEZ PERDU")
+        elif  self.partie.compteur.valeur_joueur == 21:
+            self.tour_joueur_fini = True
+            self.tour_croupier_fini = True
+            self.jeu_fini = True
+            self.message_jeu_fini = "BLACK JACK - VOUS AVEZ GAGNÉ"
+            print("Vous avez dépasse 21 - VOUS AVEZ PERDU")
         elif self.partie.compteur.valeur_croupier > 21:
             self.tour_joueur_fini = True
             self.tour_croupier_fini = True
             self.jeu_fini = True
             self.message_jeu_fini = "Le croupier a dépassé 21 - VOUS AVEZ GAGNÉ"
+            print("Le croupier a dépassé 21 - VOUS AVEZ GAGNÉ")
+        elif self.partie.compteur.valeur_croupier == 21:
+            self.tour_joueur_fini = True
+            self.tour_croupier_fini = True
+            self.jeu_fini = True
+            self.message_jeu_fini = "Le croupier a un BLACKJACK - VOUS AVEZ PERDU"
             print("Le croupier a dépassé 21 - VOUS AVEZ GAGNÉ")
 
         #Comparaison des scores
