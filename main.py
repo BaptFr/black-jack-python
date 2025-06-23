@@ -74,7 +74,6 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if controleur.jeu_fini and bouton_restart.est_clique(event.pos):
                 print("Nouvelle partie lancée")
@@ -95,10 +94,14 @@ while running:
                     controleur.stand_joueur =True
                     controleur.controle_fin_jeu()
                     print("joueur reste / maintenant au croupier")
-                    tour_croupier.action_croupier_etape()
+                    tour_croupier.demarrer()
                     besoin_rafraichissement = True
                 elif controleur.tour_joueur_fini and controleur.tour_croupier_fini:
                     controleur.controle_fin_jeu()
+
+    if tour_croupier.en_cours:
+        tour_croupier.mise_a_jour()
+        besoin_rafraichissement = True
 
     ##MAJ DE L'AFFICHAGE/Chaque action
     if besoin_rafraichissement:
@@ -134,9 +137,10 @@ while running:
         bouton_rester.dessiner(screen)
         bouton_restart.dessiner(screen)
         # Màj affichage écran
+        pygame.time.delay(700)
         pygame.display.flip()
         besoin_rafraichissement = False  #blocage rafraichissement inaction
 
         #Limite en FPS:
-    clock.tick(10)
+    clock.tick(2)
 

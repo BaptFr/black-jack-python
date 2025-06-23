@@ -11,9 +11,7 @@ class Tirage:
 
         for _ in range(2):
             self.tirer_carte_joueur()
-            pygame.time.delay(2000)
             self.tirer_carte_croupier()
-            pygame.time.delay(2000)
 
     def afficher_valeurs(self):
         print(f"Main Croupier: {self.compteur.valeur_croupier}")
@@ -23,10 +21,8 @@ class Tirage:
         carte = self.paquet.tirer()
         self.joueur.append(carte)
         self.compteur.mise_a_j_valeur_main(self)
-        pygame.time.delay(2000)
 
     def  tirer_carte_croupier(self):
         carte = self.paquet.tirer()
         self.croupier.append(carte)
         self.compteur.mise_a_j_valeur_main(self)
-        pygame.time.delay(2000)

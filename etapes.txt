@@ -28,7 +28,7 @@ Reaction du jeu après action:
 ****Etape 4 Tour croupier
 ***Automatiser tour croupier après joueur
 ***Logique du jeu du croupier pour son tour
-    logique <16 et > 16
+***logique <16 et > 16
 
 
 
@@ -40,28 +40,31 @@ Reaction du jeu après action:
 ***Etape 6 Relancement de la partie
    ***Relancer nouveau tirage avec bouton restart
 
----Etape 7  Valeur de l'AS
 
+***Etape 7 Gestion temps pendant tirage
+    ****Ralentir le tirage de carte - Effet réalitste
+
+---Etape 8  Valeur de l'AS
     ---selon resultat 1 ou 11
 
 
----Etape 8  Si même valeur 2 cartes de la même main
+---Etape 9  Si même valeur 2 cartes de la même main
     ---Possibilité de DOUBLE
     ---Possibilité de SPLIT
 
----Etape 8 Graphique/ style :
+---Etape 10 Graphique/ style :
     --- Fond tapis
     --- Style des cartes
     --- Sons ?
 
----Etape 9: ----Fonctionnalité sup : DOUBLE / SPLIT
 
+---------------
 
----Etape 10: ---Jetons mises
+---Etape 12: ---Jetons mises
 
 
 Supplementaire
----Etape 11: ---L'option compteur de carte ?
+---Etape 13: ---L'option compteur de carte ?
     ---logique de consomamtion des cartes conservées,
     ---plus gros nombre de paquets,
     ---pour comptage ?? avec le drop ?
