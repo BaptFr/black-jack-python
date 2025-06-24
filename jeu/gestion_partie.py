@@ -16,6 +16,6 @@ class GestionPartie:
 
     #Doubler
     def peut_doubler(self):
-        if len(self.joueur) == 2 and self.joueur[0].valeur == self.joueur[1].valeur:
-            return True
+        if  9 <= self.compteur.calcul_valeur_main(self.joueur) <= 11 :
+            return  True
         return False

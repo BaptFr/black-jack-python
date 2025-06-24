@@ -10,6 +10,7 @@ class Controleur:
         self.jeu_fini = False
         self.message_jeu_fini = " "
 
+    #ACTION DOUBLER
     def traiter_doubler(self):
         if self.partie.action_doubler():
             self.tour_joueur_fini = True

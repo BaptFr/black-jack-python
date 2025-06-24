@@ -50,8 +50,15 @@ Reaction du jeu après action:
 
 
 ---Etape 9  Si même valeur 2 cartes de la même main
-    ---Possibilité de DOUBLE
+    ***Possibilité de DOUBLE
+    --- Bouton DOUBLER
+
+    
     ---Possibilité de SPLIT
+        ---creation d'un tirage supplémentaire
+        ---
+    ---BOUTON SPLIT
+
 
 ---Etape 10 Graphique/ style :
     --- Fond tapis
