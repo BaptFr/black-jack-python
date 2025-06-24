@@ -13,3 +13,9 @@ class GestionPartie:
         self.partie.compteur.mise_a_j_valeur_main(self.partie)
         self.controleur = Controleur(self.partie)
         self.tour_croupier = TourCroupier(self.partie, self.controleur)
+
+    #Doubler
+    def peut_doubler(self):
+        if len(self.joueur) == 2 and self.joueur[0].valeur == self.joueur[1].valeur:
+            return True
+        return False

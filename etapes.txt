@@ -44,8 +44,9 @@ Reaction du jeu après action:
 ***Etape 7 Gestion temps pendant tirage
     ****Ralentir le tirage de carte - Effet réalitste
 
----Etape 8  Valeur de l'AS
-    ---selon resultat 1 ou 11
+***Etape 8  Valeur de l'AS
+    ****selon resultat 1 ou 11
+    ****As: règle française Soft 17 pour le croupier uniquement
 
 
 ---Etape 9  Si même valeur 2 cartes de la même main
