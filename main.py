@@ -39,6 +39,12 @@ def afficher_cartes(cartes, y_position, masquee=False):
             texte = font.render(str(carte), True, couleur_texte)
             screen.blit(texte, (200 + i*120, y_position)) # i ajout décalage 2nde carte
 
+def afficher_mains_joueur(joueur):
+    y_base = 375
+    espacement_y = 120
+    for i, main in enumerate(joueur):
+        afficher_cartes(main, y_base + i * espacement_y)
+
 def afficher_score_croupier_une_carte(partie, masquee):
         if masquee and len(partie.croupier) > 0:
             premiere_carte = partie.croupier[0]
@@ -61,12 +67,23 @@ print(jeu.compteur.valeur_joueur)
 bouton_tirer = Bouton(600, 400, 100, 40, "Tirer", (0, 200, 0), (0, 0, 0), font, visible=True)
 bouton_rester = Bouton(600, 450, 100, 40, "Rester", (200, 0, 0), (0, 0, 0), font,visible=True)
 bouton_restart = Bouton(300, 480, 200, 80, "Rejouer", (0, 0, 200), (200, 200, 200), font, visible = False)
-
+bouton_split =  Bouton(600, 500, 100, 40, "Split", (150, 150, 0), (0, 0, 0), font, visible=False)
+bouton_doubler = Bouton(600, 650, 100, 40, "Doubler", (150, 150, 0), (0, 0, 0), font, visible=False)
 #GESTION du rafraichissement: action/inaction
 #clock framerate pour limiter
 clock = pygame.time.Clock()
 running = True
 besoin_rafraichissement = True
+
+#Index main joueur
+controleur.index_main_joueur = 0
+
+#méthode tirage carte avec index main
+def tirer_carte_joueur_index(partie, index_main):
+    carte = partie.paquet.tirer()
+    partie.joueur[index_main].append(carte)
+    partie.compteur.mise_a_j_valeur_main(partie)
+
 
 #Jeu actif - cycle principal pygame
 while running:
@@ -75,6 +92,8 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
+            pos = event.pos
+            #Clic bouton REJOUER
             if controleur.jeu_fini and bouton_restart.est_clique(event.pos):
                 print("Nouvelle partie lancée")
                 gestion_partie.nouvelle_partie()
@@ -83,21 +102,22 @@ while running:
                 tour_croupier = gestion_partie.tour_croupier
                 besoin_rafraichissement = True
 
-            elif not controleur.tour_joueur_fini:
-                if bouton_tirer.est_clique(event.pos) and not controleur.tour_joueur_fini:  # collidepoint() méthode, eventpos = coordonnées Si click dans le rectangle bouton tirer
-                    jeu.tirer_carte_joueur()
-                    print("joueur tire une carte")
-                    controleur.controle_fin_jeu()
-                    besoin_rafraichissement = True
-                elif bouton_rester.est_clique(event.pos) and not controleur.tour_joueur_fini:
-                    controleur.tour_joueur_fini = True
-                    controleur.stand_joueur =True
-                    controleur.controle_fin_jeu()
-                    print("joueur reste / maintenant au croupier")
-                    tour_croupier.demarrer()
-                    besoin_rafraichissement = True
-                elif controleur.tour_joueur_fini and controleur.tour_croupier_fini:
-                    controleur.controle_fin_jeu()
+            #Clic Bouton TIRER
+            elif bouton_tirer.est_clique(pos) and not controleur.tour_joueur_fini:
+                print("Carte tirée par le joueur")
+                tirer_carte_joueur_index(jeu, controleur.index_main_joueur)
+                jeu.compteur.mise_a_j_valeur_main(jeu)
+                controleur.controle_fin_jeu()
+                besoin_rafraichissement = True
+
+            #Clic Bouton RESTER
+            elif bouton_rester.est_clique(pos) and not controleur.tour_joueur_fini:
+                print("Joueur reste / maintenant au croupier")
+                controleur.tour_joueur_fini = True
+                controleur.stand_joueur = True
+                tour_croupier.demarrer()
+                controleur.controle_fin_jeu()
+                besoin_rafraichissement = True
 
     if tour_croupier.en_cours:
         tour_croupier.mise_a_jour()
@@ -110,7 +130,7 @@ while running:
 
         #Cartes
         afficher_cartes(jeu.croupier, 50, masquee=not controleur.tour_joueur_fini)
-        afficher_cartes(jeu.joueur, 375)
+        afficher_cartes(jeu.joueur[0], 375)
 
         #Scores
         texte_compteur_joueur = font.render(f"Joueur: {jeu.compteur.valeur_joueur}", True,(0, 0, 0))
@@ -118,7 +138,16 @@ while running:
         screen.blit(texte_compteur_joueur, (50, 375))
         screen.blit(texte_compteur_croupier, (50, 50))
 
-        controleur.controle_fin_jeu()
+        # Conditions pour afficher bouton Split
+        main = jeu.joueur[controleur.index_main_joueur]
+        if (len(main) == 2 and main[0].valeur == main[1].valeur and
+            len(jeu.joueur) == 1):  # un seul split
+            bouton_split.visible = True
+        else:
+            bouton_split.visible = False
+            controleur.controle_fin_jeu()
+
+
         #Fin: Messages + bouton restart
         if controleur.jeu_fini:
             message_fin = font.render(controleur.message_jeu_fini, True, (200, 0, 0))

@@ -9,47 +9,51 @@ class Controleur:
         self.stand_croupier = False
         self.jeu_fini = False
         self.message_jeu_fini = " "
+        #Main en cours pour gérer split:
+        self.index_main_joueur = 0
 
     #ACTION DOUBLER
     def traiter_doubler(self):
-        if self.partie.action_doubler():
+        if self.partie.action_doubler(self.index_main_joueur):
             self.tour_joueur_fini = True
             self.stand_joueur = True
             self.controle_fin_jeu()
 
     def controle_fin_jeu(self):
+        #main en cours
+        valeur_main = self.partie.compteur.valeur_joueur[self.index_main_joueur]
+        valeur_croupier = self.partie.compteur.valeur_croupier
         #BLACKJACKs
-        if self.partie.compteur.valeur_joueur > 21:
+        if valeur_main > 21:
             self.tour_joueur_fini = True
             self.tour_croupier_fini = True
             self.jeu_fini = True
-            self.message_jeu_fini = "Vous avez dépasse 21 - VOUS AVEZ PERDU"
-        elif  self.partie.compteur.valeur_joueur == 21:
+            self.message_jeu_fini = " Au dessus de 21 - VOUS AVEZ PERDU"
+        elif valeur_main == 21:
             self.tour_joueur_fini = True
             self.tour_croupier_fini = True
             self.jeu_fini = True
-            self.message_jeu_fini = "BLACK JACK - VOUS AVEZ GAGNÉ"
-        elif self.partie.compteur.valeur_croupier > 21:
+            self.message_jeu_fini = " BLACKJACK - VOUS AVEZ GAGNÉ"
+        elif valeur_croupier > 21:
             self.tour_joueur_fini = True
             self.tour_croupier_fini = True
             self.jeu_fini = True
             self.message_jeu_fini = "Le croupier a dépassé 21 - VOUS AVEZ GAGNÉ"
-        elif self.partie.compteur.valeur_croupier == 21:
+        elif valeur_croupier == 21:
             self.tour_joueur_fini = True
             self.tour_croupier_fini = True
             self.jeu_fini = True
             self.message_jeu_fini = "Le croupier a un BLACKJACK - VOUS AVEZ PERDU"
 
-        #Comparaison des scores
+        # Comparaison des scores (après stands)
         elif self.stand_croupier and self.stand_joueur:
             self.jeu_fini = True
-            if self.partie.compteur.valeur_joueur > self.partie.compteur.valeur_croupier:
-                self.message_jeu_fini = "VOUS AVEZ GAGNÉ"
-            elif self.partie.compteur.valeur_joueur < self.partie.compteur.valeur_croupier:
-                self.message_jeu_fini = "VOUS AVEZ PERDU"
-            elif self.partie.compteur.valeur_joueur == self.partie.compteur.valeur_croupier:
-                self.message_jeu_fini = "ÉGALITÉ"
+            if valeur_main > valeur_croupier:
+                self.message_jeu_fini = f"Vous avez une meilleur main - VOUS AVEZ GAGNÉ"
+            elif valeur_main < valeur_croupier:
+                self.message_jeu_fini = f"Le croupier a une meilleur main -VOUS AVEZ PERDU"
+            else:
+                self.message_jeu_fini = f"ÉGALITÉ"
 
-        #Bilan controleur
         if self.jeu_fini:
             print(self.message_jeu_fini)

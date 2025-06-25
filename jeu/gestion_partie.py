@@ -14,8 +14,4 @@ class GestionPartie:
         self.controleur = Controleur(self.partie)
         self.tour_croupier = TourCroupier(self.partie, self.controleur)
 
-    #Doubler
-    def peut_doubler(self):
-        if  9 <= self.compteur.calcul_valeur_main(self.joueur) <= 11 :
-            return  True
-        return False
+   

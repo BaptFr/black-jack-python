@@ -5,7 +5,8 @@ from .compteur import Compteur
 
 class Tirage:
     def __init__(self):
-        self.joueur = []
+        #liste de mains
+        self.joueur = [[]]
         self.croupier = []
         self.compteur = Compteur()
         self.paquet = Paquet()
@@ -18,9 +19,9 @@ class Tirage:
         print(f"Main Croupier: {self.compteur.valeur_croupier}")
         print(f"Main Joueur: {self.compteur.valeur_joueur}")
 
-    def  tirer_carte_joueur(self):
+    def  tirer_carte_joueur(self, index_main=0):
         carte = self.paquet.tirer()
-        self.joueur.append(carte)
+        self.joueur[index_main].append(carte)
         self.compteur.mise_a_j_valeur_main(self)
 
     def  tirer_carte_croupier(self):
@@ -28,17 +29,35 @@ class Tirage:
         self.croupier.append(carte)
         self.compteur.mise_a_j_valeur_main(self)
 
+    #Doubler
     def peut_doubler(self):
-        if len(self.joueur) == 2 and self.joueur[0].valeur == self.joueur[1].valeur:
-            return True
+        if  9 <= self.compteur.calcul_valeur_main(self.joueur) <= 11 :
+            return  True
         return False
 
-
-    def action_doubler(self):
-        if not self.peut_doubler():
+    def action_doubler(self, index_main=0):
+        main = self.joueur[index_main]
+        if not self.peut_doubler(main):
             return False
-        self.tirer_carte_joueur()
-        print("Doubler: Tirage d'une carte")
+        self.tirer_carte_joueur(index_main)
+        print("Doubler: tirage d'une seule carte")
         return True
 
+    #Splitter
+    def peut_splitter(self):
+        main = self.joueur[0]
+        return len(main) == 2 and main[0].valeur == main[1].valeur
+
+    def action_splitter(self):
+        if not self.peut_splitter():
+            return False
+        main_initiale = self.joueur[0]
+        nouvelle_main_1 = [main_initiale[0]]
+        nouvelle_main_2 = [main_initiale[1]]
+
+        self.joueur = [nouvelle_main_1, nouvelle_main_2]
+        self.compteur.mise_a_j_valeur_main(self)
+
+        print("Splint effectué")
+        return True
 
