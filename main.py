@@ -1,6 +1,5 @@
 import pygame
 pygame.init()
-import sys
 
 from jeu.tirage import Tirage
 from jeu.cartes import Carte
@@ -8,6 +7,7 @@ from jeu.paquet import Paquet
 from jeu.compteur import Compteur
 from jeu.controleur import Controleur
 from jeu.tour_croupier import TourCroupier
+from jeu.tour_joueur import TourJoueur
 from jeu.gestion_partie import GestionPartie
 from jeu.bouton import Bouton
 
@@ -16,10 +16,11 @@ gestion_partie.nouvelle_partie()
 jeu = gestion_partie.partie
 controleur = gestion_partie.controleur
 tour_croupier = gestion_partie.tour_croupier
-
+tour_joueur = gestion_partie.tour_joueur
 
 # pygame config affichage
-screen= pygame.display.set_mode((800, 600))
+screen = pygame.display.set_mode((800, 600))  # créer la fenêtre AVANT
+background = pygame.image.load("assets/images/background.webp").convert()
 pygame.display.set_caption(" BLACKJACK ")
 font = pygame.font.SysFont("Arial", 24)
 
@@ -85,7 +86,8 @@ def tirer_carte_joueur_index(partie, index_main):
     partie.compteur.mise_a_j_valeur_main(partie)
 
 
-#Jeu actif - cycle principal pygame
+
+#JEU ACTIF- cycle principal pygame
 while running:
     ##GESTION D'EVENEMENTS
     for event in pygame.event.get():
@@ -93,8 +95,33 @@ while running:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
             pos = event.pos
+
+            #Clic Bouton SPLIT
+            if bouton_split.visible and bouton_split.est_clique(pos) and not controleur.tour_joueur_fini:
+                main = jeu.joueur[controleur.index_main_joueur]
+                #
+                if len(main) == 2 and main[0].valeur == main[1].valeur and len(jeu.joueur) == 1:
+                    # Action split : séparer la main en deux
+                    main_initiale = jeu.joueur[0]
+                    nouvelle_main_1 = [main_initiale[0]]
+                    nouvelle_main_2 = [main_initiale[1]]
+                    jeu.joueur = [nouvelle_main_1, nouvelle_main_2]
+                    jeu.compteur.mise_a_j_valeur_main(jeu)
+                    print("Split effectué")
+                    besoin_rafraichissement = True
+
+            #Clic Bouton DOUBLER
+            elif bouton_doubler.visible and bouton_doubler.est_clique(pos) and not controleur.tour_joueur_fini:
+                main = jeu.joueur[controleur.index_main_joueur]
+                valeur = jeu.compteur.calcul_valeur_main(main)
+                if len(main) == 2 and valeur in [9, 10, 11]:
+                    jeu.tirer_carte_joueur(controleur.index_main_joueur)
+                    print("Doubler: tirage d'une seule carte")
+                    controleur.tour_joueur_fini = True
+                    besoin_rafraichissement = True
+
             #Clic bouton REJOUER
-            if controleur.jeu_fini and bouton_restart.est_clique(event.pos):
+            elif controleur.jeu_fini and bouton_restart.est_clique(event.pos):
                 print("Nouvelle partie lancée")
                 gestion_partie.nouvelle_partie()
                 jeu = gestion_partie.partie
@@ -119,14 +146,16 @@ while running:
                 controleur.controle_fin_jeu()
                 besoin_rafraichissement = True
 
+
     if tour_croupier.en_cours:
         tour_croupier.mise_a_jour()
         besoin_rafraichissement = True
 
     ##MAJ DE L'AFFICHAGE/Chaque action
     if besoin_rafraichissement:
-        #Efface l'écran
-        screen.fill((255, 255, 255))
+        #Efface l'écran / fond
+        screen.blit(background, (0, 0))
+
 
         #Cartes
         afficher_cartes(jeu.croupier, 50, masquee=not controleur.tour_joueur_fini)
@@ -138,15 +167,9 @@ while running:
         screen.blit(texte_compteur_joueur, (50, 375))
         screen.blit(texte_compteur_croupier, (50, 50))
 
-        # Conditions pour afficher bouton Split
-        main = jeu.joueur[controleur.index_main_joueur]
-        if (len(main) == 2 and main[0].valeur == main[1].valeur and
-            len(jeu.joueur) == 1):  # un seul split
-            bouton_split.visible = True
-        else:
-            bouton_split.visible = False
-            controleur.controle_fin_jeu()
-
+         #Gestion visibilité/condition boutons Splitter et Doubler
+        bouton_split.visible = tour_joueur.peut_splitter(controleur.index_main_joueur) and not controleur.tour_joueur_fini and len(jeu.joueur) == 1
+        bouton_doubler.visible = tour_joueur.peut_doubler(controleur.index_main_joueur) and not controleur.tour_joueur_fini
 
         #Fin: Messages + bouton restart
         if controleur.jeu_fini:

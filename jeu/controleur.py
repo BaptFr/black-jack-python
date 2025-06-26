@@ -12,18 +12,27 @@ class Controleur:
         #Main en cours pour gérer split:
         self.index_main_joueur = 0
 
-    #ACTION DOUBLER
-    def traiter_doubler(self):
-        if self.partie.action_doubler(self.index_main_joueur):
-            self.tour_joueur_fini = True
-            self.stand_joueur = True
-            self.controle_fin_jeu()
 
+    def controle_blackJack(self):
+         #main en cours
+        valeur_main = self.partie.compteur.valeur_joueur[self.index_main_joueur]
+        valeur_croupier = self.partie.compteur.valeur_croupier
+        if valeur_main == 21:
+            self.tour_joueur_fini = True
+            self.tour_croupier_fini = True
+            self.jeu_fini = True
+            self.message_jeu_fini = " BLACKJACK - VOUS AVEZ GAGNÉ"
+        elif valeur_croupier == 21:
+            self.tour_joueur_fini = True
+            self.tour_croupier_fini = True
+            self.jeu_fini = True
+            self.message_jeu_fini = "Le croupier a un BLACKJACK - VOUS AVEZ PERDU"
+
+    #Contrôle fin de jeu
     def controle_fin_jeu(self):
         #main en cours
         valeur_main = self.partie.compteur.valeur_joueur[self.index_main_joueur]
         valeur_croupier = self.partie.compteur.valeur_croupier
-        #BLACKJACKs
         if valeur_main > 21:
             self.tour_joueur_fini = True
             self.tour_croupier_fini = True
@@ -33,7 +42,7 @@ class Controleur:
             self.tour_joueur_fini = True
             self.tour_croupier_fini = True
             self.jeu_fini = True
-            self.message_jeu_fini = " BLACKJACK - VOUS AVEZ GAGNÉ"
+            self.message_jeu_fini = " VOUS AVEZ GAGNÉ"
         elif valeur_croupier > 21:
             self.tour_joueur_fini = True
             self.tour_croupier_fini = True
@@ -43,7 +52,7 @@ class Controleur:
             self.tour_joueur_fini = True
             self.tour_croupier_fini = True
             self.jeu_fini = True
-            self.message_jeu_fini = "Le croupier a un BLACKJACK - VOUS AVEZ PERDU"
+            self.message_jeu_fini = " VOUS AVEZ PERDU"
 
         # Comparaison des scores (après stands)
         elif self.stand_croupier and self.stand_joueur:

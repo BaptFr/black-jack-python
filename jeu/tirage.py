@@ -43,12 +43,9 @@ class Tirage:
         print("Doubler: tirage d'une seule carte")
         return True
 
-    #Splitter
-    def peut_splitter(self):
-        main = self.joueur[0]
-        return len(main) == 2 and main[0].valeur == main[1].valeur
 
-    def action_splitter(self):
+    def action_splitter(self, index=0):
+        main_initiale = self.joueur[index]
         if not self.peut_splitter():
             return False
         main_initiale = self.joueur[0]
