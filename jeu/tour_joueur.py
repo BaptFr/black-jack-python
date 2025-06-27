@@ -3,6 +3,7 @@ class TourJoueur:
     def __init__(self, partie, controleur):
         self.partie = partie
         self.controleur = controleur
+        self.tirage = partie
 
     #Actiions spéciales
     def peut_doubler(self, index_main=0):
@@ -13,8 +14,8 @@ class TourJoueur:
 
     def peut_splitter(self, index_main=0):
         main = self.partie.joueur[index_main]
-        return len(main) == 2 and main[0].valeur == main[1].valeur
-
+        if len(main) == 2 and main[0].valeur == main[1].valeur:
+            return True
 
     def jouer(self, action, index_main=0):
         if action == "tirer":

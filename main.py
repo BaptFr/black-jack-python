@@ -19,8 +19,7 @@ tour_croupier = gestion_partie.tour_croupier
 tour_joueur = gestion_partie.tour_joueur
 
 # pygame config affichage
-screen = pygame.display.set_mode((800, 600))  # créer la fenêtre AVANT
-background = pygame.image.load("assets/images/background.webp").convert()
+screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption(" BLACKJACK ")
 font = pygame.font.SysFont("Arial", 24)
 
@@ -65,7 +64,7 @@ print(jeu.compteur.valeur_joueur)
 
 
 ## GESTION PARAMETRES AFFICHAGE PYGAME ##
-bouton_tirer = Bouton(600, 400, 100, 40, "Tirer", (0, 200, 0), (0, 0, 0), font, visible=True)
+bouton_tirer = Bouton(600, 400, 100, 40, "Tirer", (24, 148, 48), (0, 0, 0), font, visible=True)
 bouton_rester = Bouton(600, 450, 100, 40, "Rester", (200, 0, 0), (0, 0, 0), font,visible=True)
 bouton_restart = Bouton(300, 480, 200, 80, "Rejouer", (0, 0, 200), (200, 200, 200), font, visible = False)
 bouton_split =  Bouton(600, 500, 100, 40, "Split", (150, 150, 0), (0, 0, 0), font, visible=False)
@@ -154,7 +153,7 @@ while running:
     ##MAJ DE L'AFFICHAGE/Chaque action
     if besoin_rafraichissement:
         #Efface l'écran / fond
-        screen.blit(background, (0, 0))
+        screen.fill((50, 205, 50))
 
 
         #Cartes
@@ -188,6 +187,8 @@ while running:
         bouton_tirer.dessiner(screen)
         bouton_rester.dessiner(screen)
         bouton_restart.dessiner(screen)
+        bouton_split.dessiner(screen)
+        bouton_doubler.dessiner(screen)
         # Màj affichage écran
         pygame.time.delay(700)
         pygame.display.flip()

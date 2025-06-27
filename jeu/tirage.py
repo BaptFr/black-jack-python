@@ -30,11 +30,6 @@ class Tirage:
         self.compteur.mise_a_j_valeur_main(self)
 
     #Doubler
-    def peut_doubler(self):
-        if  9 <= self.compteur.calcul_valeur_main(self.joueur) <= 11 :
-            return  True
-        return False
-
     def action_doubler(self, index_main=0):
         main = self.joueur[index_main]
         if not self.peut_doubler(main):
@@ -44,15 +39,16 @@ class Tirage:
         return True
 
 
-    def action_splitter(self, index=0):
-        main_initiale = self.joueur[index]
-        if not self.peut_splitter():
+    def action_splitter(self, index_main=0):
+        main_initiale = self.joueur[index_main]
+        if not self.peut_splitter(index_main):
             return False
-        main_initiale = self.joueur[0]
+        main_initiale = self.joueur[index_main]
         nouvelle_main_1 = [main_initiale[0]]
         nouvelle_main_2 = [main_initiale[1]]
 
         self.joueur = [nouvelle_main_1, nouvelle_main_2]
+        
         self.compteur.mise_a_j_valeur_main(self)
 
         print("Splint effectué")
