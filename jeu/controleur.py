@@ -33,16 +33,24 @@ class Controleur:
         #main en cours
         valeur_main = self.partie.compteur.valeur_joueur[self.index_main_joueur]
         valeur_croupier = self.partie.compteur.valeur_croupier
+        nombre_mains = len(self.partie.joueur) #POur gérer multiple mains du Split
+
         if valeur_main > 21:
-            self.tour_joueur_fini = True
-            self.tour_croupier_fini = True
-            self.jeu_fini = True
-            self.message_jeu_fini = " Au dessus de 21 - VOUS AVEZ PERDU"
+            if self.index_main_joueur == nombre_mains - 1:
+                self.tour_joueur_fini = True
+                self.tour_croupier_fini = True
+                self.jeu_fini = True
+                self.message_jeu_fini = " Au dessus de 21 - VOUS AVEZ PERDU"
+            else:
+                self.index_main_joueur +=1
         elif valeur_main == 21:
-            self.tour_joueur_fini = True
-            self.tour_croupier_fini = True
-            self.jeu_fini = True
-            self.message_jeu_fini = " VOUS AVEZ GAGNÉ"
+            if self.index_main_joueur == nombre_mains - 1:
+                self.tour_joueur_fini = True
+                self.tour_croupier_fini = True
+                self.jeu_fini = True
+                self.message_jeu_fini = " VOUS AVEZ GAGNÉ"
+            else:
+                self.index_main_joueur += 1
         elif valeur_croupier > 21:
             self.tour_joueur_fini = True
             self.tour_croupier_fini = True
@@ -55,11 +63,12 @@ class Controleur:
             self.message_jeu_fini = " VOUS AVEZ PERDU"
 
         # Comparaison des scores (après stands)
-        elif self.stand_croupier and self.stand_joueur:
+        elif self.stand_croupier and self.stand_joueur and self.index_main_joueur == nombre_mains - 1:
             self.jeu_fini = True
-            if valeur_main > valeur_croupier:
+            valeur_main_finale = valeur_main
+            if valeur_main_finale > valeur_croupier:
                 self.message_jeu_fini = f"Vous avez une meilleur main - VOUS AVEZ GAGNÉ"
-            elif valeur_main < valeur_croupier:
+            elif valeur_main_finale < valeur_croupier:
                 self.message_jeu_fini = f"Le croupier a une meilleur main -VOUS AVEZ PERDU"
             else:
                 self.message_jeu_fini = f"ÉGALITÉ"

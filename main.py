@@ -13,6 +13,14 @@ from jeu.bouton import Bouton
 
 gestion_partie = GestionPartie()
 gestion_partie.nouvelle_partie()
+
+carte1 = Carte("5", "Coeur")
+carte2 = Carte("5", "Carreau")
+gestion_partie.partie.joueur = [[carte1, carte2]]
+gestion_partie.partie.compteur.mise_a_j_valeur_main(gestion_partie.partie)
+
+
+
 jeu = gestion_partie.partie
 controleur = gestion_partie.controleur
 tour_croupier = gestion_partie.tour_croupier
@@ -97,17 +105,8 @@ while running:
 
             #Clic Bouton SPLIT
             if bouton_split.visible and bouton_split.est_clique(pos) and not controleur.tour_joueur_fini:
-                main = jeu.joueur[controleur.index_main_joueur]
-                #
-                if len(main) == 2 and main[0].valeur == main[1].valeur and len(jeu.joueur) == 1:
-                    # Action split : séparer la main en deux
-                    main_initiale = jeu.joueur[0]
-                    nouvelle_main_1 = [main_initiale[0]]
-                    nouvelle_main_2 = [main_initiale[1]]
-                    jeu.joueur = [nouvelle_main_1, nouvelle_main_2]
-                    jeu.compteur.mise_a_j_valeur_main(jeu)
-                    print("Split effectué")
-                    besoin_rafraichissement = True
+               tour_joueur.jouer("splitter", controleur.index_main_joueur)
+               besoin_rafraichissement = True
 
             #Clic Bouton DOUBLER
             elif bouton_doubler.visible and bouton_doubler.est_clique(pos) and not controleur.tour_joueur_fini:

@@ -1,73 +1,96 @@
-***  = FAIT OK
+✔️  = FAIT OK
 ---  = A FAIRE
 
 
-***Base DU JEU
-***Affichage compteur dans le jeu***
-***print OK mais pas dans le jeu ***
-***Compteur positionnner croupier en haut à gauche, joueuru en bas à droite****
+✔️Base DU JEU
+    ✔️Affichage compteur dans le jeu
+    ✔️ OK mais pas dans le jeu 
+    ✔️Compteur positionnner croupier en haut à gauche, joueuru en bas à droite
 
 
-****Etape 2  Interactions du joueurs
-****Ajouter actions joueur :
-   *** - Hit
-   *** - Stand
-****Affichage basique Pygame des actions
+✔️Etape 2  Interactions du joueurs
+✔️Ajouter actions joueur :
+   ✔️ - Hit
+   ✔️ - Stand
+✔️Affichage basique Pygame des actions
 Reaction du jeu après action:
-    ***Tirage
-    ***Logique contôle21BJ joueur
-    ***Révéler la 2e carte du croupier.( OK après le stand. Ajouer après défaite)
-    **Ajouter logique contrôle21BJ pour croupier main complète
-    **Si BJ logique controle21BJ
+    Joueur:
+    ✔️Tirage
+    ✔️Logique contôle21BJ joueur
 
-(logique du controle 21BJ peut être lancée pour retournage carte croupier + chaque tirage carte)
+    Croupier:
+    ✔️Révéler la 2e carte du croupier.( OK après le stand. Ajouer après défaite)
+    ✔️Ajouter logique contrôle21BJ pour croupier main complète
+    ✔️Logique contôle21BJ croupier
 
-***Etape 3  Si non BJ continue logique actions bouton Joueur
-
-
-****Etape 4 Tour croupier
-***Automatiser tour croupier après joueur
-***Logique du jeu du croupier pour son tour
-***logique <16 et > 16
+✔️Etape 3:  Joueur :
+    ✔️Si non BJ continue logique actions bouton Joueur
+            Courpier:
+    ✔️Si non BJ tirage automatique  ->   >=16
 
 
-
-***Etape 5 Fin de manche / résultat
-***Logique d'alternance des tours ok ?
-***Affichage de tous les messages: victoire/défaite  + BJvictoire/Défaite
-
-
-***Etape 6 Relancement de la partie
-   ***Relancer nouveau tirage avec bouton restart
+✔️Etape 4 Tour croupier:
+    ✔️Automatiser tour croupier après joueur
+    ✔️Logique du jeu du croupier pour son tour
+    ✔️logique <16 et > 16
 
 
-***Etape 7 Gestion temps pendant tirage
-    ****Ralentir le tirage de carte - Effet réalitste
 
-***Etape 8  Valeur de l'AS
-    ****selon resultat 1 ou 11
-    ****As: règle française Soft 17 pour le croupier uniquement
+✔️Etape 5 Fin de manche / résultat:
+    ✔️Logique d'alternance des tours ok ?
+    ✔️Affichage de tous les messages: victoire/défaite  + BJvictoire/Défaite
 
 
----Etape 9  Si même valeur 2 cartes de la même main
-    ***Possibilité de DOUBLE
-    --- Bouton DOUBLER
-
-    
-    ---Possibilité de SPLIT
-        ---creation d'un tirage supplémentaire
-        ---
-    ---BOUTON SPLIT
+✔️Etape 6 Relancement de la partie
+   ✔️Relancer nouveau tirage avec bouton restart
 
 
----Etape 10 Graphique/ style :
-    --- Fond tapis
+✔️Etape 7 Gestion temps pendant tirage
+    ✔️Ralentir le tirage de carte - Effet réalitste
+
+✔️Etape 8  Valeur de l'AS
+    ✔️selon resultat 1 ou 11
+    ✔️As: règle française Soft 17 pour le croupier uniquement
+
+
+---Etape 9 Action spéciale : SPLIT
+
+    ✔️Possibilité de SPLIT
+        ✔️détection condition Split
+
+    ✔️BOUTON SPLIT apparait
+        ✔️ créer bouton modèle des autres / couleur différente
+        ✔️le faire apparaitre après détection
+        ✔️clickable
+        ✔️Déclenche action du Split
+
+    ✔️Création de 2 mains après click
+        ✔️2 mains avec un index
+        ✔️ Actions sur la première main
+        ✔️Fin de jeu sur la 1ere passage à la 2eme
+        ✔️ Actions sur la 2eme main
+        ✔️ Bascule au tour croupier
+        --- Gestion affichage 1ere main
+        --- Gestion affichage 2nd main
+
+---Etape 10 Action spéciale : DOUBLE
+    ✔️Possibilité de DOUBLE
+        ✔️détection condition Double
+
+    --BOUTON SPLIT apparait
+        --- créer bouton DOUBLER modèle des autres / couleur différente
+        ---le faire apparaitre après détection
+        ---clickable
+        ---Déclenche action du DOUBLE : tirage une seule carte supp.
+
+
+---Etape 11 Graphique/ style :
+    --- Fond tapis 800x600
     --- Style des cartes
     --- Sons ?
 
 
----------------
-
+************************************  V2 ******************************************
 ---Etape 12: ---Jetons mises
 
 

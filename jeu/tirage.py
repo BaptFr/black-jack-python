@@ -41,14 +41,19 @@ class Tirage:
 
     def action_splitter(self, index_main=0):
         main_initiale = self.joueur[index_main]
-        if not self.peut_splitter(index_main):
-            return False
-        main_initiale = self.joueur[index_main]
+
+
+        # 2 nouvelles main à la place
         nouvelle_main_1 = [main_initiale[0]]
         nouvelle_main_2 = [main_initiale[1]]
 
-        self.joueur = [nouvelle_main_1, nouvelle_main_2]
-        
+        # Supprime la main originale splittée
+        del self.joueur[index_main]
+
+        # Les 2  nouvelles mains à la place
+        self.joueur.insert(index_main, nouvelle_main_2)
+        self.joueur.insert(index_main, nouvelle_main_1)
+
         self.compteur.mise_a_j_valeur_main(self)
 
         print("Splint effectué")
