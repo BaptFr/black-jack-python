@@ -12,7 +12,7 @@ class TourCroupier:
         self.dernier_tirage = pygame.time.get_ticks()
 
     def mise_a_jour(self):
-        """Appelée à chaque frame pendant que le tour du croupier est actif"""
+        "Appelée à chaque frame pendant que le tour du croupier est actif"
         if not self.en_cours:
             return
 

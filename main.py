@@ -130,18 +130,14 @@ while running:
             #Clic Bouton TIRER
             elif bouton_tirer.est_clique(pos) and not controleur.tour_joueur_fini:
                 print("Carte tirée par le joueur")
-                tirer_carte_joueur_index(jeu, controleur.index_main_joueur)
+                controleur.tour_joueur.jouer("tirer")
                 jeu.compteur.mise_a_j_valeur_main(jeu)
                 controleur.controle_fin_jeu()
                 besoin_rafraichissement = True
 
             #Clic Bouton RESTER
             elif bouton_rester.est_clique(pos) and not controleur.tour_joueur_fini:
-                print("Joueur reste / maintenant au croupier")
-                controleur.tour_joueur_fini = True
-                controleur.stand_joueur = True
-                tour_croupier.demarrer()
-                controleur.controle_fin_jeu()
+                controleur.tour_joueur.jouer("stand")
                 besoin_rafraichissement = True
 
 

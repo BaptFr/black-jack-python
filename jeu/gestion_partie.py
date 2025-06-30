@@ -14,6 +14,7 @@ class GestionPartie:
         self.controleur = Controleur(self.partie)
         self.tour_croupier = TourCroupier(self.partie, self.controleur)
         self.tour_joueur = TourJoueur(self.partie, self.controleur)
+        self.controleur.tour_joueur = self.tour_joueur
         #Contrôle ?BlackJack
         self.controleur.controle_blackJack()
 

@@ -54,6 +54,10 @@ class Tirage:
         self.joueur.insert(index_main, nouvelle_main_2)
         self.joueur.insert(index_main, nouvelle_main_1)
 
+        #Tirage 2nd carte pour chaque main suite au split
+        self.tirer_carte_joueur(index_main)         # Pour la 1re main
+        self.tirer_carte_joueur(index_main + 1)     # Pour la 2e main
+
         self.compteur.mise_a_j_valeur_main(self)
 
         print("Splint effectué")
