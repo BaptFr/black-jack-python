@@ -1,4 +1,5 @@
 from .compteur import Compteur
+from .tour_croupier import TourCroupier 
 
 class Controleur:
     def __init__(self, partie):
@@ -11,6 +12,7 @@ class Controleur:
         self.message_jeu_fini = " "
         #Main en cours pour gérer split:
         self.index_main_joueur = 0
+        self.tour_croupier = TourCroupier(partie, self)
 
 
     def controle_blackJack(self):

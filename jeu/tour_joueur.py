@@ -50,6 +50,8 @@ class TourJoueur:
             if self.peut_splitter(idx):
                 self.partie.action_splitter(idx)
                 print("Split effectué")
+                self.index_main_courante = 0
+                self.controleur.index_main_joueur = 0
             else:
                 print("Split impossible")
 
@@ -61,16 +63,15 @@ class TourJoueur:
             print("Erreur action Jouer")
 
     def passer_main_suivante(self):
-
+        #Pour que l'index sot égale au n° de la main:
         self.controleur.index_main_joueur = self.index_main_courante
-
-        #Pour que l'index sot égale au n) de la main:
         self.index_main_courante += 1
         print(f"[DEBUG] index_main_courante={self.index_main_courante}, nb mains={len(self.partie.joueur)}")
 
         #Si toutes les main jouées => stand
         if self.index_main_courante == len(self.partie.joueur):
             self.controleur.stand_joueur = True
+            self.controleur.tour_croupier.demarrer()
             print("Fin du tour joueur, passage au tour croupier")
         else:
             print("Passage main suivante du joueur")

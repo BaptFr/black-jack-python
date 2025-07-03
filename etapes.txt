@@ -70,8 +70,14 @@ Reaction du jeu après action:
         ✔️Fin de jeu sur la 1ere passage à la 2eme
         ✔️ Actions sur la 2eme main
         ✔️ Bascule au tour croupier
-        --- Gestion affichage 1ere main
-        --- Gestion affichage 2nd main
+        ✔️ Gestion affichage 1ere main
+        ✔️ Gestion affichage 2nd main
+        ✔️ Bascule et indicateur main en cours visible
+        --- Comparaison main 1 avec croupier
+        --- Affichage resultat 1
+        --- Comparaison main 2 avec croupier
+        --- Affichage resultat 2
+
 
 ---Etape 10 Action spéciale : DOUBLE
     ✔️Possibilité de DOUBLE

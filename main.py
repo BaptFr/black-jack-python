@@ -36,22 +36,36 @@ font = pygame.font.SysFont("Arial", 24)
 jeu.compteur.mise_a_j_valeur_main(jeu)
 
 #AFFICHAGE  style cartes / Fonction enum
-def afficher_cartes(cartes, y_position, masquee=False):
-    for i, carte in enumerate(cartes):
+def afficher_cartes(cartes, position_x_main, position_y_debut, masquee=False):
+    espacement_vertical = 30
+    for index_carte, carte in enumerate(cartes):
+        position_y_carte = position_y_debut + index_carte * espacement_vertical
     #masque 2eme carte croupier
-        if masquee and i == 1:
-            pygame.draw.rect(screen, (0, 0, 255), (200 + i*120, y_position, 72, 96))
+        if masquee and index_carte == 1:
+            pygame.draw.rect(screen, (0, 0, 255), (position_x_main, position_y_carte, 72, 96))
         else:
             style = jeu.paquet.style_carte(carte) #recup style carte
             couleur_texte = pygame.Color(style["color"])
             texte = font.render(str(carte), True, couleur_texte)
-            screen.blit(texte, (200 + i*120, y_position)) # i ajout décalage 2nde carte
+            screen.blit(texte, (position_x_main, position_y_carte)) # i ajout décalage 2nde carte
 
 def afficher_mains_joueur(joueur):
-    y_base = 375
-    espacement_y = 120
-    for i, main in enumerate(joueur):
-        afficher_cartes(main, y_base + i * espacement_y)
+    position_y_cartes = 375
+    position_x_depart = 200
+    espacement_y = 300  #Ecart pour split
+    for index_main, main in enumerate(joueur):
+        #Gestion affichage Split
+        position_x_main = position_x_depart + index_main *espacement_y
+        afficher_cartes(main, position_x_main, position_y_cartes)
+
+        #Main active + visuel
+        if index_main == controleur.index_main_joueur:
+             pygame.draw.rect(
+                screen,
+                (255, 0, 0),
+                (position_x_main - 10, position_y_cartes - 10, 90, 96 + 30 * len(main)),
+                2
+            )
 
 def afficher_score_croupier_une_carte(partie, masquee):
         if masquee and len(partie.croupier) > 0:
@@ -150,10 +164,9 @@ while running:
         #Efface l'écran / fond
         screen.fill((50, 205, 50))
 
-
         #Cartes
-        afficher_cartes(jeu.croupier, 50, masquee=not controleur.tour_joueur_fini)
-        afficher_cartes(jeu.joueur[0], 375)
+        afficher_cartes(jeu.croupier, 200, 50, masquee=not controleur.tour_joueur_fini)
+        afficher_mains_joueur(jeu.joueur)
 
         #Scores
         texte_compteur_joueur = font.render(f"Joueur: {jeu.compteur.valeur_joueur}", True,(0, 0, 0))
@@ -161,7 +174,7 @@ while running:
         screen.blit(texte_compteur_joueur, (50, 375))
         screen.blit(texte_compteur_croupier, (50, 50))
 
-         #Gestion visibilité/condition boutons Splitter et Doubler
+        #Gestion visibilité/condition boutons Splitter et Doubler
         bouton_split.visible = tour_joueur.peut_splitter(controleur.index_main_joueur) and not controleur.tour_joueur_fini and len(jeu.joueur) == 1
         bouton_doubler.visible = tour_joueur.peut_doubler(controleur.index_main_joueur) and not controleur.tour_joueur_fini
 
