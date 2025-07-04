@@ -8,6 +8,7 @@ class TourCroupier:
         self.en_cours = False
 
     def demarrer(self):
+        print("tour croupier démarré")
         self.en_cours = True
         self.dernier_tirage = pygame.time.get_ticks()
 

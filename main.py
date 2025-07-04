@@ -106,8 +106,6 @@ def tirer_carte_joueur_index(partie, index_main):
     partie.joueur[index_main].append(carte)
     partie.compteur.mise_a_j_valeur_main(partie)
 
-
-
 #JEU ACTIF- cycle principal pygame
 while running:
     ##GESTION D'EVENEMENTS
@@ -155,8 +153,8 @@ while running:
                 besoin_rafraichissement = True
 
 
-    if tour_croupier.en_cours:
-        tour_croupier.mise_a_jour()
+    if controleur.tour_croupier.en_cours:
+        controleur.tour_croupier.mise_a_jour()
         besoin_rafraichissement = True
 
     ##MAJ DE L'AFFICHAGE/Chaque action
@@ -174,9 +172,21 @@ while running:
         screen.blit(texte_compteur_joueur, (50, 375))
         screen.blit(texte_compteur_croupier, (50, 50))
 
+
         #Gestion visibilité/condition boutons Splitter et Doubler
-        bouton_split.visible = tour_joueur.peut_splitter(controleur.index_main_joueur) and not controleur.tour_joueur_fini and len(jeu.joueur) == 1
-        bouton_doubler.visible = tour_joueur.peut_doubler(controleur.index_main_joueur) and not controleur.tour_joueur_fini
+        index_valide = 0 <= controleur.index_main_joueur < len(jeu.joueur)
+        bouton_split.visible = (
+            index_valide and
+            tour_joueur.peut_splitter(controleur.index_main_joueur) and
+            not controleur.tour_joueur_fini and
+            len(jeu.joueur) == 1
+        )
+
+        bouton_doubler.visible = (
+            index_valide and
+            tour_joueur.peut_doubler(controleur.index_main_joueur) and
+            not controleur.tour_joueur_fini
+        )
 
         #Fin: Messages + bouton restart
         if controleur.jeu_fini:
@@ -187,8 +197,8 @@ while running:
             bouton_rester.visible = False
         else:
             bouton_restart.visible = False
-            bouton_tirer.visible = True
-            bouton_rester.visible = True
+            bouton_tirer.visible = index_valide and not controleur.tour_joueur_fini
+            bouton_rester.visible = index_valide and not controleur.tour_joueur_fini
 
 
         #Boutons
@@ -197,6 +207,7 @@ while running:
         bouton_restart.dessiner(screen)
         bouton_split.dessiner(screen)
         bouton_doubler.dessiner(screen)
+
         # Màj affichage écran
         pygame.time.delay(700)
         pygame.display.flip()
