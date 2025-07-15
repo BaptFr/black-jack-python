@@ -4,6 +4,7 @@ class TourJoueur:
         self.controleur = controleur
         self.index_main_courante = 0
 
+
     def peut_doubler(self, index_main=0):
         if index_main >= len(self.partie.joueur):
             print(f"[DEBUG] Index {index_main} hors limite dans peut_doubler")
@@ -13,6 +14,7 @@ class TourJoueur:
         valeur = self.partie.compteur.calcul_valeur_main(main)
         return len(main) == 2 and valeur in [9, 10, 11]
 
+
     def peut_splitter(self, index_main=0):
         #Debug
         if index_main >= len(self.partie.joueur):
@@ -20,9 +22,28 @@ class TourJoueur:
             return False
 
         main = self.partie.joueur[index_main]
-        if len(main) == 2 and main[0].valeur == main[1].valeur:
-            return True
-        return False
+        # Deux cartes seulement
+        if len(main) != 2:
+            return False
+
+        #Correction: Règles Frabnçaise. Comparaison des valeurs numériques des cartes
+        valeur1 = self.partie.compteur.valeurs_cartes [main[0].valeur]
+        valeur2 = self.partie.compteur.valeurs_cartes [main[1].valeur]
+        if valeur1 != valeur2:
+            return False
+
+        #Max 4 split -> 4 mains
+        if len(self.partie.joueur) >= 4:
+            print("[SPLIT INTERDIT] Nombre maximum de mains atteint")
+            return False
+        #2x split As interdit
+        if main[0].valeur == "As":
+            if hasattr(self.partie, "as_deja_split") and self.partie.as_deja_split:
+                print("[SPLIT INTERDIT] Re-split des As interdit")
+                return False
+
+        return True
+
 
     def jouer(self, action, index_main=None):
         idx = index_main if index_main is not None else self.index_main_courante
@@ -54,4 +75,5 @@ class TourJoueur:
 
         if self.index_main_courante >= len(self.partie.joueur):
             self.controleur.stand_joueur = True
+            self.controleur.tour_joueur_fini = True
             self.controleur.tour_croupier.demarrer()

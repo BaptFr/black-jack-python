@@ -73,10 +73,8 @@ Reaction du jeu après action:
         ✔️ Gestion affichage 1ere main
         ✔️ Gestion affichage 2nd main
         ✔️ Bascule et indicateur main en cours visible
-        --- Comparaison main 1 avec croupier
-        --- Affichage resultat 1
-        --- Comparaison main 2 avec croupier
-        --- Affichage resultat 2
+        ✔️ Comparaison main 1 et 2  avec croupier
+        ✔️ Affichage resultat 1 et 2
 
 
 ---Etape 10 Action spéciale : DOUBLE
