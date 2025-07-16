@@ -5,16 +5,6 @@ class TourJoueur:
         self.index_main_courante = 0
 
 
-    def peut_doubler(self, index_main=0):
-        if index_main >= len(self.partie.joueur):
-            print(f"[DEBUG] Index {index_main} hors limite dans peut_doubler")
-            return False
-
-        main = self.partie.joueur[index_main]
-        valeur = self.partie.compteur.calcul_valeur_main(main)
-        return len(main) == 2 and valeur in [9, 10, 11]
-
-
     def peut_splitter(self, index_main=0):
         #Debug
         if index_main >= len(self.partie.joueur):
@@ -26,7 +16,7 @@ class TourJoueur:
         if len(main) != 2:
             return False
 
-        #Correction: Règles Frabnçaise. Comparaison des valeurs numériques des cartes
+        #Correction: Règles Françaises. Comparaison des valeurs numériques des cartes
         valeur1 = self.partie.compteur.valeurs_cartes [main[0].valeur]
         valeur2 = self.partie.compteur.valeurs_cartes [main[1].valeur]
         if valeur1 != valeur2:
@@ -41,8 +31,17 @@ class TourJoueur:
             if hasattr(self.partie, "as_deja_split") and self.partie.as_deja_split:
                 print("[SPLIT INTERDIT] Re-split des As interdit")
                 return False
-
         return True
+
+
+    def peut_doubler(self, index_main=0):
+        if index_main >= len(self.partie.joueur):
+            print(f"[DEBUG] Index {index_main} hors limite dans peut_doubler")
+            return False
+
+        main = self.partie.joueur[index_main]
+        valeur = self.partie.compteur.calcul_valeur_main(main)
+        return len(main) == 2 and valeur in [9, 10, 11]
 
 
     def jouer(self, action, index_main=None):
@@ -57,6 +56,7 @@ class TourJoueur:
         elif action == "doubler":
             if self.peut_doubler(idx):
                 self.partie.action_doubler(idx)
+                print("action doubler")
                 self.passer_main_suivante()
 
         elif action == "splitter":
@@ -74,6 +74,7 @@ class TourJoueur:
         self.controleur.index_main_joueur = self.index_main_courante
 
         if self.index_main_courante >= len(self.partie.joueur):
+            print('stand jouer ...')
             self.controleur.stand_joueur = True
             self.controleur.tour_joueur_fini = True
             self.controleur.tour_croupier.demarrer()

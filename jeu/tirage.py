@@ -31,17 +31,14 @@ class Tirage:
 
     #Doubler
     def action_doubler(self, index_main=0):
-        main = self.joueur[index_main]
-        if not self.peut_doubler(main):
-            return False
         self.tirer_carte_joueur(index_main)
+        self.compteur.mise_a_j_valeur_main(self)
         print("Doubler: tirage d'une seule carte")
         return True
 
 
     def action_splitter(self, index_main=0):
         main_initiale = self.joueur[index_main]
-
 
         # 2 nouvelles main à la place
         nouvelle_main_1 = [main_initiale[0]]

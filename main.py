@@ -14,10 +14,11 @@ from jeu.bouton import Bouton
 gestion_partie = GestionPartie()
 gestion_partie.nouvelle_partie()
 
-carte1 = Carte("5", "Coeur")
-carte2 = Carte("5", "Carreau")
-gestion_partie.partie.joueur = [[carte1, carte2]]
-gestion_partie.partie.compteur.mise_a_j_valeur_main(gestion_partie.partie)
+#TEST DE COMBINAISON 1ere main au lancement
+# carte1 = Carte("4", "Coeur")
+# carte2 = Carte("6", "Carreau")
+# gestion_partie.partie.joueur = [[carte1, carte2]]
+# gestion_partie.partie.compteur.mise_a_j_valeur_main(gestion_partie.partie)
 
 
 
@@ -90,7 +91,7 @@ bouton_tirer = Bouton(600, 400, 100, 40, "Tirer", (24, 148, 48), (0, 0, 0), font
 bouton_rester = Bouton(600, 450, 100, 40, "Rester", (200, 0, 0), (0, 0, 0), font,visible=True)
 bouton_restart = Bouton(300, 480, 200, 80, "Rejouer", (0, 0, 200), (200, 200, 200), font, visible = False)
 bouton_split =  Bouton(600, 500, 100, 40, "Split", (150, 150, 0), (0, 0, 0), font, visible=False)
-bouton_doubler = Bouton(600, 650, 100, 40, "Doubler", (150, 150, 0), (0, 0, 0), font, visible=False)
+bouton_doubler = Bouton(600, 550, 100, 40, "Doubler", (150, 150, 0), (0, 0, 0), font, visible=False)
 #GESTION du rafraichissement: action/inaction
 #clock framerate pour limiter
 clock = pygame.time.Clock()
@@ -122,13 +123,8 @@ while running:
 
             #Clic Bouton DOUBLER
             elif bouton_doubler.visible and bouton_doubler.est_clique(pos) and not controleur.tour_joueur_fini:
-                main = jeu.joueur[controleur.index_main_joueur]
-                valeur = jeu.compteur.calcul_valeur_main(main)
-                if len(main) == 2 and valeur in [9, 10, 11]:
-                    jeu.tirer_carte_joueur(controleur.index_main_joueur)
-                    print("Doubler: tirage d'une seule carte")
-                    controleur.tour_joueur_fini = True
-                    besoin_rafraichissement = True
+                tour_joueur.jouer("doubler", controleur.index_main_joueur)
+                besoin_rafraichissement = True
 
             #Clic bouton REJOUER
             elif controleur.jeu_fini and bouton_restart.est_clique(event.pos):
@@ -138,6 +134,13 @@ while running:
                 controleur = gestion_partie.controleur
                 tour_croupier = gestion_partie.tour_croupier
                 besoin_rafraichissement = True
+                #Réinititaliser
+                controleur.index_main_joueur = 0
+                controleur.tour_joueur.index_main_courante = 0
+                controleur.tour_joueur.tour_joueur_fini = False
+                controleur.jeu_fini = False
+                controleur.message_jeu_fini = ""
+
 
             #Clic Bouton TIRER
             elif bouton_tirer.est_clique(pos) and not controleur.tour_joueur_fini:

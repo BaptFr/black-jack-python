@@ -82,10 +82,10 @@ Reaction du jeu après action:
         ✔️détection condition Double
 
     --BOUTON SPLIT apparait
-        --- créer bouton DOUBLER modèle des autres / couleur différente
-        ---le faire apparaitre après détection
-        ---clickable
-        ---Déclenche action du DOUBLE : tirage une seule carte supp.
+        ✔️ créer bouton DOUBLER modèle des autres / couleur différente
+        ✔️le faire apparaitre après détection
+        ✔️clickable
+        ✔️Déclenche action du DOUBLE : tirage une seule carte supp.
 
 
 ---Etape 11 Graphique/ style :
@@ -93,7 +93,8 @@ Reaction du jeu après action:
     --- Style des cartes
     --- Sons ?
 
-
+---Etape 12 DEBUG:
+    ---Test en jeu
 ************************************  V2 ******************************************
 ---Etape 12: ---Jetons mises
 
