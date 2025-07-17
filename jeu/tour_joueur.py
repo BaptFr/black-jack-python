@@ -55,15 +55,27 @@ class TourJoueur:
 
         elif action == "doubler":
             if self.peut_doubler(idx):
-                self.partie.action_doubler(idx)
-                print("action doubler")
-                self.passer_main_suivante()
+                mise_actuelle = self.partie.mises[idx]
+                if self.partie.solde >= mise_actuelle:
+                    self.partie.solde -= mise_actuelle
+                    self.partie.mises[idx] = mise_actuelle * 2
+                    self.partie.action_doubler(idx)
+                    print("action doubler")
+                    self.passer_main_suivante()
+                else:
+                    print("Solde insuffisant pour doubler")
 
         elif action == "splitter":
             if self.peut_splitter(idx):
-                self.partie.action_splitter(idx)
-                self.index_main_courante = 0
-                self.controleur.index_main_joueur = 0
+                mise_actuelle = self.partie.mises[idx]
+                if self.partie.solde >= mise_actuelle:
+                    self.partie.solde -= mise_actuelle
+                    self.partie.action_splitter(idx)
+                    self.index_main_courante = 0
+                    self.controleur.index_main_joueur = 0
+                    print("action splitter")
+                else:
+                    print("Solde insuffisant pour splitter")
 
         elif action == "stand":
             print("action stand")

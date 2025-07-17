@@ -8,6 +8,8 @@ class Tirage:
         #liste de mains
         self.joueur = [[]]
         self.croupier = []
+        self.solde = 1000
+        self.mises = [50]
         self.compteur = Compteur()
         self.paquet = Paquet()
 
@@ -39,17 +41,23 @@ class Tirage:
 
     def action_splitter(self, index_main=0):
         main_initiale = self.joueur[index_main]
+        mise_initiale = self.mises[index_main]
 
         # 2 nouvelles main à la place
         nouvelle_main_1 = [main_initiale[0]]
         nouvelle_main_2 = [main_initiale[1]]
 
-        # Supprime la main originale splittée
+        # Supprime la main originale splittée + miser originale
         del self.joueur[index_main]
+        del self.mises[index_main]
+
 
         # Les 2  nouvelles mains à la place
         self.joueur.insert(index_main, nouvelle_main_2)
         self.joueur.insert(index_main, nouvelle_main_1)
+        # Gestion mises
+        self.mises.insert(index_main, mise_initiale)
+        self.mises.insert(index_main +1, mise_initiale)
 
         #Tirage 2nd carte pour chaque main suite au split
         self.tirer_carte_joueur(index_main)         # Pour la 1re main
@@ -57,6 +65,14 @@ class Tirage:
 
         self.compteur.mise_a_j_valeur_main(self)
 
-        print("Splint effectué")
+        print("Split effectué")
+
+        #Gestin mises
+        mise_initiale = self.mises[index_main]
+        if self.solde < mise_initiale:
+                print("Solde insuffisant pour splitter")
+                return False
+        self.solde -= mise_initiale
+
         return True
 
