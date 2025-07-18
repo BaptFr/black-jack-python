@@ -44,7 +44,7 @@ class Controleur:
                 self.message_jeu_fini = "Le croupier a dépassé 21 - VOUS AVEZ GAGNÉ"
                 print(self.message_jeu_fini)
                 return
-            elif valeur_croupier == 21:
+            elif valeur_croupier == 21 and valeur_main != 21:
                 self.message_jeu_fini = "Le croupier a 21 - VOUS AVEZ PERDU"
                 print(self.message_jeu_fini)
                 return
@@ -114,25 +114,27 @@ class Controleur:
                 self.index_main_joueur += 1
                 self.stand_joueur = False
 
+        if self.jeu_fini:
+            self.regler_mises()
+            return
+
         if self.tour_joueur_fini and not self.tour_croupier.en_cours:
             self.tour_croupier.demarrer()
 
-        if self.jeu_fini:
-            self.regler_mises()
 
-        def regler_mises(self):
-            valeur_croupier = self.partie.compteur.valeur_croupier
-            for i, main in enumerate(self.partie.joueur):
-                valeur_main = self.partie.compteur.valeur_joueur[i]
-                mise = self.partie.mises[i]
+    def regler_mises(self):
+        valeur_croupier = self.partie.compteur.valeur_croupier
+        for i, main in enumerate(self.partie.joueur):
+            valeur_main = self.partie.compteur.valeur_joueur[i]
+            mise = self.partie.mises[i]
 
-                if valeur_croupier > 21:
-                    self.partie.solde += 2 * mise
-                elif valeur_main == 21 and len(main) == 2 and valeur_croupier != 21:
-                    # Blackjack
-                    gain = mise * 2.5
-                    self.partie.solde += gain
-                elif valeur_main > valeur_croupier:
-                    self.partie.solde += 2 * mise
-                elif valeur_main == valeur_croupier:
-                    self.partie.solde += mise
+            if valeur_croupier > 21:
+                self.partie.solde += 2 * mise
+            elif valeur_main == 21 and len(main) == 2 and valeur_croupier != 21:
+                # Blackjack
+                gain = mise * 2.5
+                self.partie.solde += gain
+            elif valeur_main > valeur_croupier:
+                self.partie.solde += 2 * mise
+            elif valeur_main == valeur_croupier:
+                self.partie.solde += mise

@@ -4,11 +4,11 @@ from .compteur import Compteur
 
 
 class Tirage:
-    def __init__(self):
+    def __init__(self, solde=1000):
         #liste de mains
         self.joueur = [[]]
         self.croupier = []
-        self.solde = 1000
+        self.solde = solde
         self.mises = [50]
         self.compteur = Compteur()
         self.paquet = Paquet()
