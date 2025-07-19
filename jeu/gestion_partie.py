@@ -11,30 +11,26 @@ class GestionPartie:
         self.tour_croupier = None
         self.tour_joueur = None
 
-    def nouvelle_partie(self, mise_initiale=None):
-        solde_actuel = self.partie.solde if self.partie else 1000
+    def nouvelle_partie(self, mise_initiale):
+        if mise_initiale is None:
+            print("Erreur : mise initiale obligatoire")
+            return False
+        solde_actuel = self.partie.solde if self.partie else 0
 
-        if mise_initiale is not None:
-            if mise_initiale > solde_actuel:
-                print("Mise trop élevée")
-                return False
+        if mise_initiale > solde_actuel:
+            print("Mise trop élevée")
+            return False
 
         if self.partie is None:
             self.partie = Tirage(solde=solde_actuel - mise_initiale)
         else:
+            self.partie.solde = solde_actuel - mise_initiale
             self.partie.joueur = [[]]
             self.partie.croupier = []
-            self.partie.mises = [mise_initiale]
             self.partie.paquet = Paquet()
             self.partie.compteur = Compteur()
-        if mise_initiale is not None:
-            if mise_initiale > self.partie.solde:
-                print("Solde insuffisant")
-                return False
-            self.partie.mises = [mise_initiale]
-        else:
-            self.partie.mises = [100]
 
+        self.partie.mises = [mise_initiale]
         self.partie.compteur.mise_a_j_valeur_main(self.partie)
 
         self.controleur = Controleur(self.partie)
@@ -45,7 +41,7 @@ class GestionPartie:
         #Contrôle ?BlackJack
         self.controleur.controle_blackJack()
         if self.controleur.jeu_fini:
-                self.controleur.regler_mises()
+            self.controleur.regler_mises()
         print(self.controleur.message_jeu_fini)
         return True
 
