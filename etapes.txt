@@ -4,7 +4,7 @@
 
 ✔️Base DU JEU
     ✔️Affichage compteur dans le jeu
-    ✔️ OK mais pas dans le jeu 
+    ✔️ OK mais pas dans le jeu
     ✔️Compteur positionnner croupier en haut à gauche, joueuru en bas à droite
 
 
@@ -87,20 +87,47 @@ Reaction du jeu après action:
         ✔️clickable
         ✔️Déclenche action du DOUBLE : tirage une seule carte supp.
 
+---Etape 11: Système de mises
+    ✔️ Affichage continu d'un solde. base de 1000€
+    ✔️ Après click bouton restart
+        ✔️ Disparition du jeu + bouton restart
+        ✔️Avant lancement de la partie tirage, affichage choix des mises 
+        ✔️Affichage bouton "Lancer partie" qui met fin aux mises au click
+        ✔️ Addition des mises possibles
+        ✔️Affichage du montant de la mise constant pendant le jeu
+    ✔️ Bouton de lancement de partie clické - > fin des mises
+            ✔️Soustraction des mises au Solde
+            ✔️Affichage du montant de la mise maintenu
+            ✔️Lancement tirage
+            ✔️Affichage du montant de la miseLogique changement de mise et solde selon action:
+                ✔️Action Doubler
+                ✔️Action Splitter
+            ✔️Fin de jeu:
+                ✔️Après comparaison main:
+                        ✔️si gain ajout au solde du montant:
+                            ✔️Gain main supérieure
+                            ✔️Gain BlackJack
+                            ✔️Gain Egalité
+                            ✔️Gain selon main si Split
 
 ---Etape 11 Graphique/ style :
     --- Fond tapis 800x600
-    --- Style des cartes
+    --- Style des boutons d'action
+    ---Style des message d'annonces
+    --- Style des cartes !
+    --- Jetons mises ?
     --- Sons ?
 
 ---Etape 12 DEBUG:
     ---Test en jeu
+        --Bugs trouvés :
+        situation de jeu/ action -> résultat attendu / Resultat réel obtenu
+        SIT:              / AC: -> RA: / RR:
+
+
 ************************************  V2 ******************************************
----Etape 12: ---Jetons mises
-
-
 Supplementaire
 ---Etape 13: ---L'option compteur de carte ?
     ---logique de consomamtion des cartes conservées,
-    ---plus gros nombre de paquets,
+    ---plus gros nombre de paquets identique aux jeux réel France,
     ---pour comptage ?? avec le drop ?

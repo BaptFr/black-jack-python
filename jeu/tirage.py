@@ -66,12 +66,6 @@ class Tirage:
         self.compteur.mise_a_j_valeur_main(self)
 
         print("Split effectué")
-
-        #Gestin mises
-        mise_initiale = self.mises[index_main]
-        if self.solde < mise_initiale:
-                print("Solde insuffisant pour splitter")
-                return False
         self.solde -= mise_initiale
 
         return True

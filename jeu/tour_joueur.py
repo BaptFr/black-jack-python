@@ -68,9 +68,7 @@ class TourJoueur:
         elif action == "splitter":
             if self.peut_splitter(idx):
                 mise_actuelle = self.partie.mises[idx]
-                if self.partie.solde >= mise_actuelle:
-                    self.partie.solde -= mise_actuelle
-                    self.partie.action_splitter(idx)
+                if self.partie.action_splitter(idx):
                     self.index_main_courante = 0
                     self.controleur.index_main_joueur = 0
                     print("action splitter")

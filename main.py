@@ -11,7 +11,8 @@ from jeu.tour_joueur import TourJoueur
 from jeu.gestion_partie import GestionPartie
 from jeu.bouton import Bouton
 
-gestion_partie = GestionPartie()
+solde_initial = 1000
+gestion_partie = GestionPartie(solde_initial)
 
 #TEST DE COMBINAISON 1ere main au lancement
 # carte1 = Carte("4", "Coeur")
@@ -24,11 +25,11 @@ controleur = None
 tour_croupier = None
 tour_joueur = None
 
+
 # pygame config affichage
 screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption(" BLACKJACK ")
 font = pygame.font.SysFont("Arial", 24)
-
 
 #Boutons mises avant début du jeu
 saisie_mise_active = True
@@ -41,7 +42,7 @@ boutons_mises = [
     (Bouton(160, 200, 100, 40, "50 €", (100, 200, 100), (0,0,0), font), 50),
     (Bouton(270, 200, 100, 40, "100 €", (100, 200, 100), (0,0,0), font), 100),
 ]
-bouton_lancer_partie = Bouton(400, 200, 150, 40, "Lancer", (0, 200, 0), (255, 255, 255), font, visible=True)
+bouton_lancer_partie = Bouton(400, 200, 150, 40, "Lancer la partie", (0, 200, 0), (255, 255, 255), font, visible=True)
 
 #clock framerate pour limiter
 clock = pygame.time.Clock()
@@ -67,7 +68,7 @@ def afficher_cartes(cartes, position_x_main, position_y_debut, masquee=False):
 def afficher_mains_joueur(joueur):
     position_y_cartes = 375
     position_x_depart = 200
-    espacement_y = 300  #Ecart pour split
+    espacement_y = 200  #Ecart pour split
     for index_main, main in enumerate(joueur):
         #Gestion affichage Split
         position_x_main = position_x_depart + index_main *espacement_y
@@ -85,7 +86,7 @@ def afficher_mains_joueur(joueur):
 def afficher_mises(mises):
     position_x = 50
     position_y = 320
-    espacement = 150
+    espacement = 250
 
     for i, mise in enumerate(mises):
         texte_mise = font.render(f"Mise main {i+1} : {mise} €", True, (0, 0, 0))
@@ -94,6 +95,7 @@ def afficher_mises(mises):
 def afficher_solde(solde):
     texte_solde = font.render(f"Solde : {solde} €", True, (0, 0, 0))
     screen.blit(texte_solde, (600, 550))
+
 
 def afficher_score_croupier_une_carte(partie, masquee):
         if masquee and len(partie.croupier) > 0:
@@ -113,11 +115,11 @@ if jeu and controleur:
 
 
 ## GESTION PARAMETRES AFFICHAGE PYGAME ##
-bouton_tirer = Bouton(600, 400, 100, 40, "Tirer", (24, 148, 48), (0, 0, 0), font, visible=True)
-bouton_rester = Bouton(600, 450, 100, 40, "Rester", (200, 0, 0), (0, 0, 0), font,visible=True)
-bouton_restart = Bouton(300, 480, 200, 80, "Rejouer", (0, 0, 200), (200, 200, 200), font, visible = False)
-bouton_split =  Bouton(600, 500, 100, 40, "Split", (150, 150, 0), (0, 0, 0), font, visible=False)
-bouton_doubler = Bouton(600, 550, 100, 40, "Doubler", (150, 150, 0), (0, 0, 0), font, visible=False)
+bouton_tirer = Bouton(600, 350, 100, 40, "Tirer", (24, 148, 48), (0, 0, 0), font, visible=False)
+bouton_rester = Bouton(600, 400, 100, 40, "Rester", (200, 0, 0), (0, 0, 0), font,visible=False)
+bouton_restart = Bouton(300, 300, 200, 80, "Rejouer", (0, 0, 200), (200, 200, 200), font, visible = False)
+bouton_split =  Bouton(600, 450, 100, 40, "Split", (150, 150, 0), (0, 0, 0), font, visible=False)
+bouton_doubler = Bouton(600, 500, 100, 40, "Doubler", (150, 150, 0), (0, 0, 0), font, visible=False)
 #GESTION du rafraichissement: action/inaction
 running = True
 besoin_rafraichissement = True
@@ -146,9 +148,10 @@ while running:
 
             #Clic Bouton Mises
             if saisie_mise_active:
+                bouton_restart.visible = False
                 for bouton, mise in boutons_mises:
                     if bouton.est_clique(pos):
-                        solde_actuel = gestion_partie.partie.solde if gestion_partie.partie else 1000
+                        solde_actuel = gestion_partie.partie.solde if gestion_partie.partie else gestion_partie.solde_initial
                         if mise_choisie + mise > solde_actuel  :
                             print(f"Solde insuffisant")
                         else:
@@ -165,6 +168,8 @@ while running:
                     controleur = gestion_partie.controleur
                     tour_croupier = gestion_partie.tour_croupier
                     tour_joueur = gestion_partie.tour_joueur
+                    bouton_tirer.visible = True
+                    bouton_rester.visible = True
                     besoin_rafraichissement = True
             else:
                 #Clic Bouton SPLIT
@@ -180,18 +185,17 @@ while running:
                 #Clic bouton REJOUER
                 elif controleur.jeu_fini and bouton_restart.est_clique(event.pos):
                     print("Nouvelle partie lancée")
-                    gestion_partie.nouvelle_partie()
-                    jeu = gestion_partie.partie
-                    controleur = gestion_partie.controleur
-                    tour_croupier = gestion_partie.tour_croupier
+                    print("Nouvelle mise attendue")
+                    #Efface le dernier jeu
+                    jeu = None
+                    controleur = None
+                    tour_joueur = None
+                    tour_croupier = None
+                    bouton_restart.visible = False
+                    saisie_mise_active = True
+                    jeu_initialise = False
+                    mise_choisie = 0
                     besoin_rafraichissement = True
-                    #Réinititaliser
-                    controleur.index_main_joueur = 0
-                    controleur.tour_joueur.index_main_courante = 0
-                    controleur.tour_joueur.tour_joueur_fini = False
-                    controleur.jeu_fini = False
-                    controleur.message_jeu_fini = ""
-
 
                 #Clic Bouton TIRER
                 elif bouton_tirer.est_clique(pos) and not controleur.tour_joueur_fini:
@@ -215,6 +219,12 @@ while running:
     if besoin_rafraichissement:
         #Efface l'écran / fond
         screen.fill((50, 205, 50))
+
+        if gestion_partie.partie:
+            afficher_solde(gestion_partie.partie.solde)
+        else:
+            afficher_solde(gestion_partie.solde_initial)
+
         #Aff Boutons Mises avant débit de partie
         if saisie_mise_active:
             for bouton, _ in boutons_mises:
@@ -235,10 +245,6 @@ while running:
 
             #Mises & solde après début de partie
             afficher_mises(jeu.mises)
-            if jeu:
-                afficher_solde(jeu.solde)
-            else:
-                afficher_solde(solde_disponible)
 
 
             #Gestion visibilité/condition boutons Splitter et Doubler
@@ -258,8 +264,8 @@ while running:
 
             #Fin: Messages + bouton restart
             if controleur.jeu_fini:
-                message_fin = font.render(controleur.message_jeu_fini, True, (200, 0, 0))
-                screen.blit(message_fin, (100, 200))
+                message_fin = font.render(controleur.message_jeu_fini, True, (255, 255, 0))
+                screen.blit(message_fin, (50, 200))
                 bouton_restart.visible = True
                 bouton_tirer.visible = False
                 bouton_rester.visible = False

@@ -24,6 +24,11 @@ class Controleur:
             self.tour_croupier_fini = True
             self.jeu_fini = True
             self.message_jeu_fini = " BLACKJACK - VOUS AVEZ GAGNÉ"
+        elif  valeur_main > 21:
+            self.tour_joueur_fini = True
+            self.tour_croupier_fini = True
+            self.jeu_fini = True
+            self.message_jeu_fini = " Vous avez dépassé 21 - VOUS AVEZ PERDU"
         elif valeur_croupier == 21:
             self.tour_joueur_fini = True
             self.tour_croupier_fini = True
@@ -35,41 +40,19 @@ class Controleur:
         nombre_mains = len(self.partie.joueur) #gérer multiple mains du Split
         valeur_croupier = self.partie.compteur.valeur_croupier
 
-       #Fin jeu Comparaison finale
+       #Fin jeu Comparaison finale tous les tours finis
         if self.stand_croupier and self.tour_joueur_fini:
             print("[DEBUG] Comparaison finale lancée !")
             self.jeu_fini = True
 
-            if valeur_croupier > 21:
-                self.message_jeu_fini = "Le croupier a dépassé 21 - VOUS AVEZ GAGNÉ"
-                print(self.message_jeu_fini)
-                return
-            elif valeur_croupier == 21 and valeur_main != 21:
-                self.message_jeu_fini = "Le croupier a 21 - VOUS AVEZ PERDU"
-                print(self.message_jeu_fini)
-                return
-
-            # Correction: Comparer avec toutes les mains du joueur (Cas du Split)
-            resultats = []
-            if nombre_mains > 1:
-                for i in range(nombre_mains):
-                    valeur_main = self.partie.compteur.valeur_joueur[i]
-
-                    if valeur_main > 21:
-                        resultats.append(f"MAIN {i+1} au dessus de 21 - PERDU")
-                    elif valeur_main > valeur_croupier:
-                        resultats.append(f"MAIN {i+1} supérieure au croupier GAGNÉ")
-                    elif valeur_main < valeur_croupier:
-                        resultats.append(f"MAIN {i+1} inférieure au croupier PERDU")
-                    else:
-                        resultats.append(f"MAIN {i+1}: Égalité")
-
-                self.message_jeu_fini = "    |    ".join(resultats)
-
-            #x1 main Joueur
-            else :
+            if nombre_mains == 1:
                 valeur_main = self.partie.compteur.valeur_joueur[0]
-                if valeur_main > 21:
+
+                if valeur_croupier > 21:
+                    self.message_jeu_fini = "Le croupier a dépassé 21 - VOUS AVEZ GAGNÉ"
+                elif valeur_croupier == 21 and valeur_main != 21:
+                    self.message_jeu_fini = "Le croupier a 21 - VOUS AVEZ PERDU"
+                elif valeur_main > 21:
                     self.message_jeu_fini = "Vous avez dépassé 21 - VOUS AVEZ PERDU "
                 elif valeur_main > valeur_croupier:
                     self.message_jeu_fini = "Vous avez une meilleure main - VOUS AVEZ GAGNÉ"
@@ -78,9 +61,32 @@ class Controleur:
                 else:
                     self.message_jeu_fini = "ÉGALITÉ  avec le croupier"
 
-            print(self.message_jeu_fini)
-            return
+                print(self.message_jeu_fini)
 
+            # Correction: Comparer avec toutes les mains du joueur (Cas du Split)
+            else:
+                resultats = []
+                for i in range(nombre_mains):
+                    valeur_main = self.partie.compteur.valeur_joueur[i]
+
+                    if valeur_main > 21:
+                        resultats.append(f"MAIN {i+1} au dessus de 21 - PERDU")
+                    elif valeur_croupier > 21 and valeur_main <= 21:
+                        resultats.append(f"MAIN {i+1}: Le croupier a dépassé 21 - VOUS AVEZ GAGNÉ")
+                        print(self.message_jeu_fini)
+                    elif valeur_main > valeur_croupier:
+                        resultats.append(f"MAIN {i+1} supérieure au croupier GAGNÉ")
+                    elif valeur_main < valeur_croupier:
+                        resultats.append(f"MAIN {i+1} inférieure au croupier PERDU")
+                    else:
+                        resultats.append(f"MAIN {i+1}: Égalité")
+
+                self.message_jeu_fini = "    |    ".join(resultats)
+                print(self.message_jeu_fini)
+
+            #Paiement mises
+            self.regler_mises()
+            return
         print("[DEBUG] Comparaison finale PAS lancée")
 
         #Logique pendant le jeu
@@ -114,6 +120,7 @@ class Controleur:
                 self.index_main_joueur += 1
                 self.stand_joueur = False
 
+        #Fallback gain mises
         if self.jeu_fini:
             self.regler_mises()
             return
