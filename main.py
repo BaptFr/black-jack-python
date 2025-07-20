@@ -1,4 +1,5 @@
 import pygame
+import os
 pygame.init()
 
 from jeu.tirage import Tirage
@@ -19,17 +20,19 @@ gestion_partie = GestionPartie(solde_initial)
 # carte2 = Carte("6", "Carreau")
 # gestion_partie.partie.joueur = [[carte1, carte2]]
 # gestion_partie.partie.compteur.mise_a_j_valeur_main(gestion_partie.partie)
-
 jeu = None
 controleur = None
 tour_croupier = None
 tour_joueur = None
 
-
 # pygame config affichage
 screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption(" BLACKJACK ")
 font = pygame.font.SysFont("Arial", 24)
+
+images_cartes = {}
+
+
 
 #Boutons mises avant début du jeu
 saisie_mise_active = True
@@ -38,18 +41,29 @@ jeu_initialise = False
 
 mises_possibles = [25, 50, 100]
 boutons_mises = [
-    (Bouton(50, 200, 100, 40, "25 €", (100, 200, 100), (0,0,0), font), 25),
-    (Bouton(160, 200, 100, 40, "50 €", (100, 200, 100), (0,0,0), font), 50),
-    (Bouton(270, 200, 100, 40, "100 €", (100, 200, 100), (0,0,0), font), 100),
+    (Bouton(50, 200, 100, 40, "25 €", (26, 35, 126), (255, 255, 255), font), 25),
+    (Bouton(160, 200, 100, 40, "50 €", (26, 35, 126), (255, 255, 255), font), 50),
+    (Bouton(270, 200, 100, 40, "100 €", (26, 35, 126), (255, 255, 255), font), 100),
 ]
-bouton_lancer_partie = Bouton(400, 200, 150, 40, "Lancer la partie", (0, 200, 0), (255, 255, 255), font, visible=True)
+bouton_lancer_partie = Bouton(400, 200, 150, 40, "Lancer la partie", (83, 109, 254), (255, 255, 255), font, visible=True)
 
 #clock framerate pour limiter
 clock = pygame.time.Clock()
-
-def afficher_message_texte(message, x, y):
-    texte = font.render(message, True, (0, 0, 0))
-    screen.blit(texte, (x, y))
+#images pour cartes
+def charger_images_cartes():
+    dossier = "assets/images/cartes"
+    for fichier in os.listdir(dossier):
+        if fichier.endswith(".png"):
+            chemin = os.path.join(dossier, fichier)
+            image = pygame.image.load(chemin).convert_alpha()
+            # Redimensionne l'image
+            image = pygame.transform.scale(image, (80, 120))
+            images_cartes[fichier] = image
+    chemin_dos = os.path.join(dossier, "back_card.png")
+    if os.path.exists(chemin_dos):
+        image_dos = pygame.image.load(chemin_dos).convert_alpha()
+        image_dos = pygame.transform.scale(image_dos, (80, 120))
+        images_cartes["dos"] = image_dos
 
 #AFFICHAGE  style cartes / Fonction enum
 def afficher_cartes(cartes, position_x_main, position_y_debut, masquee=False):
@@ -58,12 +72,23 @@ def afficher_cartes(cartes, position_x_main, position_y_debut, masquee=False):
         position_y_carte = position_y_debut + index_carte * espacement_vertical
     #masque 2eme carte croupier
         if masquee and index_carte == 1:
-            pygame.draw.rect(screen, (0, 0, 255), (position_x_main, position_y_carte, 72, 96))
+            dos_image = images_cartes.get("dos")
+            if dos_image:
+                screen.blit(dos_image, (position_x_main, position_y_carte))
         else:
-            style = jeu.paquet.style_carte(carte) #recup style carte
-            couleur_texte = pygame.Color(style["color"])
-            texte = font.render(str(carte), True, couleur_texte)
-            screen.blit(texte, (position_x_main, position_y_carte)) # i ajout décalage 2nde carte
+            nom_image = os.path.basename(carte.image_path())
+            image = images_cartes.get(nom_image)
+            if image:
+                screen.blit(image, (position_x_main, position_y_carte))
+            else:
+                # fallback texte si image non trouvée
+                texte = font.render(f"{carte.valeur} {carte.couleur}", True, (0, 0, 0))
+                screen.blit(texte, (position_x_main, position_y_carte))
+charger_images_cartes()
+
+def afficher_message_texte(message, x, y):
+    texte = font.render(message, True, (0, 0, 0))
+    screen.blit(texte, (x, y))
 
 def afficher_mains_joueur(joueur):
     position_y_cartes = 375
@@ -73,13 +98,12 @@ def afficher_mains_joueur(joueur):
         #Gestion affichage Split
         position_x_main = position_x_depart + index_main *espacement_y
         afficher_cartes(main, position_x_main, position_y_cartes)
-
         #Main active + visuel
         if index_main == controleur.index_main_joueur:
              pygame.draw.rect(
                 screen,
                 (255, 0, 0),
-                (position_x_main - 10, position_y_cartes - 10, 90, 96 + 30 * len(main)),
+                (position_x_main -10, position_y_cartes - 10, 100, 110 + 30 * len(main)),
                 2
             )
 

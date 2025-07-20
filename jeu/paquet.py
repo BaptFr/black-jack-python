@@ -3,7 +3,7 @@ from .cartes import Carte
 #*1 paquet de 52 cartes
 class Paquet:
     def __init__(self):
-        couleurs = ["Coeur", "Carreau", "Trèfle", "Pique"]
+        couleurs = ["Coeur", "Carreau", "Trefle", "Pique"]
         valeurs = [ "2", "3", "4", "5", "6", "7", "8", "9", "10", "V", "D", "R", "As"]
         #Liste cartes
         self.cartes = []
