@@ -70,16 +70,16 @@ class Controleur:
                     valeur_main = self.partie.compteur.valeur_joueur[i]
 
                     if valeur_main > 21:
-                        resultats.append(f"MAIN {i+1} au dessus de 21 - PERDU")
+                        resultats.append(f"MAIN {i+1} PERDUE")
                     elif valeur_croupier > 21 and valeur_main <= 21:
-                        resultats.append(f"MAIN {i+1}: Le croupier a dépassé 21 - VOUS AVEZ GAGNÉ")
+                        resultats.append(f"MAIN {i+1}: GAGNÉE")
                         print(self.message_jeu_fini)
                     elif valeur_main > valeur_croupier:
-                        resultats.append(f"MAIN {i+1} supérieure au croupier GAGNÉ")
+                        resultats.append(f"MAIN {i+1} GAGNÉE")
                     elif valeur_main < valeur_croupier:
-                        resultats.append(f"MAIN {i+1} inférieure au croupier PERDU")
+                        resultats.append(f"MAIN {i+1} PERDUE")
                     else:
-                        resultats.append(f"MAIN {i+1}: Égalité")
+                        resultats.append(f"MAIN {i+1}: ÉGALITÉ")
 
                 self.message_jeu_fini = "    |    ".join(resultats)
                 print(self.message_jeu_fini)

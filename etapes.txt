@@ -112,13 +112,22 @@ Reaction du jeu après action:
 
 ---Etape 11 Graphique/ style :
     --- Fond tapis 800x600
-    --- Style des boutons d'action
+    ✔️ Style des boutons d'action
     ---Style des message d'annonces
-    --- Style des cartes !
+    ✔️ Style des cartes !
     --- Jetons mises ?
     --- Sons ?
 
----Etape 12 DEBUG:
+---Etape 12 Debug:
+    --- Règles FR blackjack croupier direct ?
+    --- Si joueur tirage > 21, pas de tirage croupier. Juste réveler carte Croupier vainqueur
+    --- Si click "lancer partie" sans mise afficher mess erreur
+     ✔️ Tirage D de carreau pas d'image 
+    --- Alignement > 2 cartes tirées : pas de décalage x
+    --- Solde devient un float d'un coup
+
+
+---Etape 12 DEBUG retours:
     ---Test en jeu
         --Bugs trouvés :
         situation de jeu/ action -> résultat attendu / Resultat réel obtenu

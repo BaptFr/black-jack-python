@@ -29,6 +29,9 @@ tour_joueur = None
 screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption(" BLACKJACK ")
 font = pygame.font.SysFont("Arial", 24)
+background_image = pygame.image.load("assets/images/fond/background.png")
+fond_image = pygame.transform.scale(background_image, screen.get_size())
+
 
 images_cartes = {}
 
@@ -41,11 +44,11 @@ jeu_initialise = False
 
 mises_possibles = [25, 50, 100]
 boutons_mises = [
-    (Bouton(50, 200, 100, 40, "25 €", (26, 35, 126), (255, 255, 255), font), 25),
-    (Bouton(160, 200, 100, 40, "50 €", (26, 35, 126), (255, 255, 255), font), 50),
-    (Bouton(270, 200, 100, 40, "100 €", (26, 35, 126), (255, 255, 255), font), 100),
+    (Bouton(50, 300, 100, 40, "25 €", (26, 35, 126), (255, 255, 255), font), 25),
+    (Bouton(160, 300, 100, 40, "50 €", (26, 35, 126), (255, 255, 255), font), 50),
+    (Bouton(270, 300, 100, 40, "100 €", (26, 35, 126), (255, 255, 255), font), 100),
 ]
-bouton_lancer_partie = Bouton(400, 200, 150, 40, "Lancer la partie", (83, 109, 254), (255, 255, 255), font, visible=True)
+bouton_lancer_partie = Bouton(400, 300, 200, 40, "Lancer la partie", (83, 109, 254), (255, 255, 255), font, visible=True)
 
 #clock framerate pour limiter
 clock = pygame.time.Clock()
@@ -70,20 +73,23 @@ def afficher_cartes(cartes, position_x_main, position_y_debut, masquee=False):
     espacement_vertical = 30
     for index_carte, carte in enumerate(cartes):
         position_y_carte = position_y_debut + index_carte * espacement_vertical
-    #masque 2eme carte croupier
+        #Décalage cartes
+        decalage_x = 10 if index_carte > 0 else 0
+        position_x_carte = position_x_main + decalage_x
+        #Masque 2eme carte croupier
         if masquee and index_carte == 1:
             dos_image = images_cartes.get("dos")
             if dos_image:
-                screen.blit(dos_image, (position_x_main, position_y_carte))
+                screen.blit(dos_image, (position_x_carte, position_y_carte))
         else:
             nom_image = os.path.basename(carte.image_path())
             image = images_cartes.get(nom_image)
             if image:
-                screen.blit(image, (position_x_main, position_y_carte))
+                screen.blit(image, (position_x_carte, position_y_carte))
             else:
                 # fallback texte si image non trouvée
                 texte = font.render(f"{carte.valeur} {carte.couleur}", True, (0, 0, 0))
-                screen.blit(texte, (position_x_main, position_y_carte))
+                screen.blit(texte, (position_x_carte, position_y_carte))
 charger_images_cartes()
 
 def afficher_message_texte(message, x, y):
@@ -141,7 +147,7 @@ if jeu and controleur:
 ## GESTION PARAMETRES AFFICHAGE PYGAME ##
 bouton_tirer = Bouton(600, 350, 100, 40, "Tirer", (24, 148, 48), (0, 0, 0), font, visible=False)
 bouton_rester = Bouton(600, 400, 100, 40, "Rester", (200, 0, 0), (0, 0, 0), font,visible=False)
-bouton_restart = Bouton(300, 300, 200, 80, "Rejouer", (0, 0, 200), (200, 200, 200), font, visible = False)
+bouton_restart = Bouton(550, 510, 200, 80, "Rejouer", (0, 0, 200), (200, 200, 200), font, visible = False)
 bouton_split =  Bouton(600, 450, 100, 40, "Split", (150, 150, 0), (0, 0, 0), font, visible=False)
 bouton_doubler = Bouton(600, 500, 100, 40, "Doubler", (150, 150, 0), (0, 0, 0), font, visible=False)
 #GESTION du rafraichissement: action/inaction
@@ -243,6 +249,8 @@ while running:
     if besoin_rafraichissement:
         #Efface l'écran / fond
         screen.fill((50, 205, 50))
+        #Background image
+        screen.blit(background_image, (0,0))
 
         if gestion_partie.partie:
             afficher_solde(gestion_partie.partie.solde)
@@ -255,7 +263,7 @@ while running:
                 bouton.dessiner(screen)
                 bouton_lancer_partie.dessiner(screen)
                 texte_mise = font.render(f"Mise totale : {mise_choisie} €", True, (0, 0, 0))
-                screen.blit(texte_mise, (50, 150))
+                screen.blit(texte_mise, (50, 200))
         #Aff Cartes
         if jeu and controleur:
             afficher_cartes(jeu.croupier, 200, 50, masquee=not controleur.tour_joueur_fini)
@@ -269,7 +277,6 @@ while running:
 
             #Mises & solde après début de partie
             afficher_mises(jeu.mises)
-
 
             #Gestion visibilité/condition boutons Splitter et Doubler
             index_valide = 0 <= controleur.index_main_joueur < len(jeu.joueur)
@@ -288,8 +295,8 @@ while running:
 
             #Fin: Messages + bouton restart
             if controleur.jeu_fini:
-                message_fin = font.render(controleur.message_jeu_fini, True, (255, 255, 0))
-                screen.blit(message_fin, (50, 200))
+                message_fin = font.render(controleur.message_jeu_fini, True, (235, 237, 239), (52, 73, 94))
+                screen.blit(message_fin, (255, 260))
                 bouton_restart.visible = True
                 bouton_tirer.visible = False
                 bouton_rester.visible = False
