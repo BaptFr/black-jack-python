@@ -139,7 +139,7 @@ class Controleur:
                 self.partie.solde += 2 * mise
             elif valeur_main == 21 and len(main) == 2 and valeur_croupier != 21:
                 # Blackjack
-                gain = mise * 2.5
+                gain = round(mise*2.5)
                 self.partie.solde += gain
             elif valeur_main > valeur_croupier:
                 self.partie.solde += 2 * mise

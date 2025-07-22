@@ -32,15 +32,14 @@ font = pygame.font.SysFont("Arial", 24)
 background_image = pygame.image.load("assets/images/fond/background.png")
 fond_image = pygame.transform.scale(background_image, screen.get_size())
 
-
 images_cartes = {}
-
-
 
 #Boutons mises avant début du jeu
 saisie_mise_active = True
 mise_choisie = 0
 jeu_initialise = False
+message_erreur_mise = False
+
 
 mises_possibles = [25, 50, 100]
 boutons_mises = [
@@ -122,6 +121,10 @@ def afficher_mises(mises):
         texte_mise = font.render(f"Mise main: {mise} €", True, (211, 211, 211))
         screen.blit(texte_mise, (position_x + i * espacement, position_y))
 
+def afficher_message_mise():
+        texte = font.render("Veuillez choisir une mise avant de commencer", True, (255, 0, 0))
+        screen.blit(texte, (50, 250))
+
 def afficher_solde(solde):
     texte_solde = font.render(f"Solde : {solde} €", True, (211, 211, 211))
     screen.blit(texte_solde, (600, 550))
@@ -147,7 +150,7 @@ if jeu and controleur:
 ## GESTION PARAMETRES AFFICHAGE PYGAME ##
 bouton_tirer = Bouton(600, 350, 100, 40, "Tirer", (24, 148, 48), (255, 255, 255), font, visible=False)
 bouton_rester = Bouton(600, 400, 100, 40, "Rester", (200, 0, 0), (255, 255, 255), font,visible=False)
-bouton_restart = Bouton(550, 515, 200, 80, "Rejouer", (0, 0, 200), (200, 200, 200), font, visible = False)
+bouton_restart = Bouton(550, 350, 200, 80, "Rejouer", (0, 0, 200), (200, 200, 200), font, visible = False)
 bouton_split =  Bouton(600, 450, 100, 40, "Split", (255, 215, 0), (255, 255, 255), font, visible=False)
 bouton_doubler = Bouton(600, 500, 100, 40, "Doubler", (255, 165, 0), (255, 255, 255), font, visible=False)
 #GESTION du rafraichissement: action/inaction
@@ -190,17 +193,22 @@ while running:
                             besoin_rafraichissement = True
                         break
                 # Récupération des objets après création de la partie
-                if bouton_lancer_partie.est_clique(pos) and mise_choisie > 0:
-                    saisie_mise_active = False
-                    jeu_initialise = True
-                    gestion_partie.nouvelle_partie(mise_initiale=mise_choisie)
-                    jeu = gestion_partie.partie
-                    controleur = gestion_partie.controleur
-                    tour_croupier = gestion_partie.tour_croupier
-                    tour_joueur = gestion_partie.tour_joueur
-                    bouton_tirer.visible = True
-                    bouton_rester.visible = True
-                    besoin_rafraichissement = True
+                if bouton_lancer_partie.est_clique(pos):
+                    if mise_choisie == 0:
+                        message_erreur_mise = True
+                        besoin_rafraichissement = True
+                    else:
+                        message_erreur_mise = False
+                        saisie_mise_active = False
+                        jeu_initialise = True
+                        gestion_partie.nouvelle_partie(mise_initiale=mise_choisie)
+                        jeu = gestion_partie.partie
+                        controleur = gestion_partie.controleur
+                        tour_croupier = gestion_partie.tour_croupier
+                        tour_joueur = gestion_partie.tour_joueur
+                        bouton_tirer.visible = True
+                        bouton_rester.visible = True
+                        besoin_rafraichissement = True
             else:
                 #Clic Bouton SPLIT
                 if bouton_split.visible and bouton_split.est_clique(pos) and not controleur.tour_joueur_fini:
@@ -261,9 +269,13 @@ while running:
         if saisie_mise_active:
             for bouton, _ in boutons_mises:
                 bouton.dessiner(screen)
-                bouton_lancer_partie.dessiner(screen)
-                texte_mise = font.render(f"Mise totale : {mise_choisie} €", True, (211, 211, 211))
-                screen.blit(texte_mise, (50, 200))
+            bouton_lancer_partie.dessiner(screen)
+            texte_mise = font.render(f"Mise totale : {mise_choisie} €", True, (211, 211, 211))
+            screen.blit(texte_mise, (50, 200))
+            #Erreur si pas de mise
+            if message_erreur_mise:
+                afficher_message_mise()
+
         #Aff Cartes
         if jeu and controleur:
             afficher_cartes(jeu.croupier, 200, 50, masquee=not controleur.tour_joueur_fini)

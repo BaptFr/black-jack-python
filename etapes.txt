@@ -111,9 +111,9 @@ Reaction du jeu après action:
                             ✔️Gain selon main si Split
 
 ---Etape 11 Graphique/ style :
-    --- Fond tapis 800x600
+    ✔️ Fond tapis 800x600
     ✔️ Style des boutons d'action
-    ---Style des message d'annonces
+    ✔️Style des message d'annonces
     ✔️ Style des cartes !
     --- Jetons mises ?
     --- Sons ?
@@ -122,9 +122,9 @@ Reaction du jeu après action:
     --- Règles FR blackjack croupier direct ?
     --- Si joueur tirage > 21, pas de tirage croupier. Juste réveler carte Croupier vainqueur
     --- Si click "lancer partie" sans mise afficher mess erreur
-     ✔️ Tirage D de carreau pas d'image 
+    ✔️ Tirage D de carreau pas d'image
     --- Alignement > 2 cartes tirées : pas de décalage x
-    --- Solde devient un float d'un coup
+    ✔️ Solde devient un float après BJ
 
 
 ---Etape 12 DEBUG retours:
