@@ -60,12 +60,12 @@ def charger_images_cartes():
             chemin = os.path.join(dossier, fichier)
             image = pygame.image.load(chemin).convert_alpha()
             # Redimensionne l'image
-            image = pygame.transform.scale(image, (80, 120))
+            image = pygame.transform.scale(image, (100, 140))
             images_cartes[fichier] = image
     chemin_dos = os.path.join(dossier, "back_card.png")
     if os.path.exists(chemin_dos):
         image_dos = pygame.image.load(chemin_dos).convert_alpha()
-        image_dos = pygame.transform.scale(image_dos, (80, 120))
+        image_dos = pygame.transform.scale(image_dos, (100, 140))
         images_cartes["dos"] = image_dos
 
 #AFFICHAGE  style cartes / Fonction enum
@@ -93,7 +93,7 @@ def afficher_cartes(cartes, position_x_main, position_y_debut, masquee=False):
 charger_images_cartes()
 
 def afficher_message_texte(message, x, y):
-    texte = font.render(message, True, (0, 0, 0))
+    texte = font.render(message, True, (211, 211, 211))
     screen.blit(texte, (x, y))
 
 def afficher_mains_joueur(joueur):
@@ -109,7 +109,7 @@ def afficher_mains_joueur(joueur):
              pygame.draw.rect(
                 screen,
                 (255, 0, 0),
-                (position_x_main -10, position_y_cartes - 10, 100, 110 + 30 * len(main)),
+                (position_x_main -10, position_y_cartes, 140, 120 + 30 * len(main)),
                 2
             )
 
@@ -119,11 +119,11 @@ def afficher_mises(mises):
     espacement = 250
 
     for i, mise in enumerate(mises):
-        texte_mise = font.render(f"Mise main {i+1} : {mise} €", True, (0, 0, 0))
+        texte_mise = font.render(f"Mise main: {mise} €", True, (211, 211, 211))
         screen.blit(texte_mise, (position_x + i * espacement, position_y))
 
 def afficher_solde(solde):
-    texte_solde = font.render(f"Solde : {solde} €", True, (0, 0, 0))
+    texte_solde = font.render(f"Solde : {solde} €", True, (211, 211, 211))
     screen.blit(texte_solde, (600, 550))
 
 
@@ -145,11 +145,11 @@ if jeu and controleur:
 
 
 ## GESTION PARAMETRES AFFICHAGE PYGAME ##
-bouton_tirer = Bouton(600, 350, 100, 40, "Tirer", (24, 148, 48), (0, 0, 0), font, visible=False)
-bouton_rester = Bouton(600, 400, 100, 40, "Rester", (200, 0, 0), (0, 0, 0), font,visible=False)
-bouton_restart = Bouton(550, 510, 200, 80, "Rejouer", (0, 0, 200), (200, 200, 200), font, visible = False)
-bouton_split =  Bouton(600, 450, 100, 40, "Split", (150, 150, 0), (0, 0, 0), font, visible=False)
-bouton_doubler = Bouton(600, 500, 100, 40, "Doubler", (150, 150, 0), (0, 0, 0), font, visible=False)
+bouton_tirer = Bouton(600, 350, 100, 40, "Tirer", (24, 148, 48), (255, 255, 255), font, visible=False)
+bouton_rester = Bouton(600, 400, 100, 40, "Rester", (200, 0, 0), (255, 255, 255), font,visible=False)
+bouton_restart = Bouton(550, 515, 200, 80, "Rejouer", (0, 0, 200), (200, 200, 200), font, visible = False)
+bouton_split =  Bouton(600, 450, 100, 40, "Split", (255, 215, 0), (255, 255, 255), font, visible=False)
+bouton_doubler = Bouton(600, 500, 100, 40, "Doubler", (255, 165, 0), (255, 255, 255), font, visible=False)
 #GESTION du rafraichissement: action/inaction
 running = True
 besoin_rafraichissement = True
@@ -262,7 +262,7 @@ while running:
             for bouton, _ in boutons_mises:
                 bouton.dessiner(screen)
                 bouton_lancer_partie.dessiner(screen)
-                texte_mise = font.render(f"Mise totale : {mise_choisie} €", True, (0, 0, 0))
+                texte_mise = font.render(f"Mise totale : {mise_choisie} €", True, (211, 211, 211))
                 screen.blit(texte_mise, (50, 200))
         #Aff Cartes
         if jeu and controleur:
@@ -270,8 +270,8 @@ while running:
             afficher_mains_joueur(jeu.joueur)
 
             #Aff Scores
-            texte_compteur_joueur = font.render(f"Joueur: {jeu.compteur.valeur_joueur}", True,(0, 0, 0))
-            texte_compteur_croupier = font.render(afficher_score_croupier_une_carte(jeu, masquee=not controleur.tour_joueur_fini), True, (0, 0, 0))
+            texte_compteur_joueur = font.render(f"Joueur: {jeu.compteur.valeur_joueur}", True,(211, 211, 211))
+            texte_compteur_croupier = font.render(afficher_score_croupier_une_carte(jeu, masquee=not controleur.tour_joueur_fini), True, (211, 211, 211))
             screen.blit(texte_compteur_joueur, (50, 375))
             screen.blit(texte_compteur_croupier, (50, 50))
 
@@ -296,7 +296,7 @@ while running:
             #Fin: Messages + bouton restart
             if controleur.jeu_fini:
                 message_fin = font.render(controleur.message_jeu_fini, True, (235, 237, 239), (52, 73, 94))
-                screen.blit(message_fin, (255, 260))
+                screen.blit(message_fin, (240, 260))
                 bouton_restart.visible = True
                 bouton_tirer.visible = False
                 bouton_rester.visible = False
