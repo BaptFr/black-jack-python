@@ -10,16 +10,34 @@ Projet de jeu BlackJack codé en Python 🐍  pour travailler la POO et la logiq
 
 </br> 
 
+## ▶️ Comment jouer
+
+1. **Cloner le projet**
+- Installer Python 3 (si ce n’est pas déjà fait) et les dépendances :
+
+</br> 
+
+
+2. **Installez les dépendances**
+- Commandes bash:
+  pip install -r requirements.txt
+
+</br> 
+
+3. **Lancez le jeu**
+- python main.py
+
+</br>
+
 ## 💻📦 Technologies utilisées
 - Python 3
 - Affichage du jeu avec Pygame
-- Système de styles selon la couleur des cartes
-
 
 ## ⚙️ Caractéristiques et fonctionnalités du jeu
 - Création et mélange d’un paquet de 52 cartes
 - Distribution de cartes au joueur et au croupier
 - Compteur de la valeur des mains
+- Système de mises avant chaque jeu
 
 
 ## 🃏 Règles du jeu
