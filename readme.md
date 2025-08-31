@@ -1,6 +1,14 @@
 <h1 align="center"> ♥️♣️ BlackJack en Python ♦️♠️ <h1>
 Projet de jeu BlackJack codé en Python 🐍  pour travailler la POO et la logique de jeu.
 
+</br>
+</br> 
+
+<div align="center">
+<img src="https://i.imgur.com/RamEZzo.gif" />
+</div>
+
+</br> 
 
 ## 💻📦 Technologies utilisées
 - Python 3
