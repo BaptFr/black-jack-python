@@ -1,4 +1,7 @@
+<div align="center"  ><img src="https://i.imgur.com/d2IV9U9.jpeg" width="150"/> </div>
+
 <h1 align="center"> ♥️♣️ BlackJack en Python ♦️♠️ <h1>
+</br>
 Projet de jeu BlackJack codé en Python 🐍  pour travailler la POO et la logique de jeu.
 
 </br>
