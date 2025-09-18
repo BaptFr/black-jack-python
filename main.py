@@ -28,7 +28,7 @@ tour_joueur = None
 # pygame config affichage
 screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption(" BLACKJACK ")
-font = pygame.font.SysFont("Arial", 24)
+font = pygame.font.Font("assets/fonts/pixel_font.ttf", 14)
 background_image = pygame.image.load("assets/images/fond/background.png")
 fond_image = pygame.transform.scale(background_image, screen.get_size())
 
@@ -41,15 +41,27 @@ jeu_initialise = False
 message_erreur_mise = False
 
 
-mises_possibles = [25, 50, 100]
-boutons_mises = [
-    (Bouton(50, 300, 100, 40, "25 €", (26, 35, 126), (255, 255, 255), font), 25),
-    (Bouton(160, 300, 100, 40, "50 €", (26, 35, 126), (255, 255, 255), font), 50),
-    (Bouton(270, 300, 100, 40, "100 €", (26, 35, 126), (255, 255, 255), font), 100),
+jetons = [
+    {"chemin": "assets/images/jetons/jeton_rouge.png", "valeur": 25, "pos": (160, 280)},
+    {"chemin": "assets/images/jetons/jeton_vert.png",  "valeur": 50, "pos": (270, 280)},
+    {"chemin": "assets/images/jetons/jeton_noir.png",  "valeur": 100, "pos": (380, 280)},
 ]
-#Version dessinée bouton_lancer_partie = Bouton(400, 300, 200, 40, "Lancer la partie", (83, 109, 254), (255, 255, 255), font, visible=True)
+for j in jetons:
+    j["image"] = pygame.image.load(j["chemin"]).convert_alpha()
+    j["image"] = pygame.transform.scale(j["image"], (80, 80))
+    j["rect"] = j["image"].get_rect(topleft=j["pos"])
+
+def afficher_jetons(screen, jetons, font):
+    for j in jetons:
+        # Affichage de l'image
+        screen.blit(j["image"], j["pos"])
+        # Affichage de la valeur en dessous
+        texte = font.render(f"{j['valeur']} €", True, (255, 255, 255))
+        text_rect = texte.get_rect(center=(j["rect"].centerx, j["rect"].bottom + 12))
+        screen.blit(texte, text_rect)
+
 bouton_lancer_partie = pygame.image.load("assets/images/boutons/lancer_partie_btn.png").convert_alpha()
-position_bouton = (400, 290)
+position_bouton = (490, 290)
 rect_bouton = bouton_lancer_partie.get_rect(topleft=position_bouton)
 
 #clock framerate pour limiter
@@ -111,8 +123,8 @@ def afficher_mains_joueur(joueur):
              pygame.draw.rect(
                 screen,
                 (255, 0, 0),
-                (position_x_main -10, position_y_cartes, 140, 120 + 30 * len(main)),
-                2
+                (position_x_main  -10, position_y_cartes, 140, 120 + 30 * len(main)),
+                1
             )
 
 def afficher_mises(mises):
@@ -185,13 +197,13 @@ while running:
             #Clic Bouton Mises
             if saisie_mise_active:
                 bouton_restart.visible = False
-                for bouton, mise in boutons_mises:
-                    if bouton.est_clique(pos):
+                for j in jetons:
+                    if j["rect"].collidepoint(pos):
                         solde_actuel = gestion_partie.partie.solde if gestion_partie.partie else gestion_partie.solde_initial
-                        if mise_choisie + mise > solde_actuel  :
-                            print(f"Solde insuffisant")
+                        if mise_choisie + j["valeur"] > solde_actuel:
+                            print("Solde insuffisant")
                         else:
-                            mise_choisie += mise
+                            mise_choisie += j["valeur"]
                             print(f"Mise choisie : {mise_choisie} €")
                             besoin_rafraichissement = True
                         break
@@ -270,13 +282,12 @@ while running:
 
         #Aff Boutons Mises avant débit de partie
         if saisie_mise_active:
-            for bouton, _ in boutons_mises:
-                bouton.dessiner(screen)
+            afficher_jetons(screen, jetons, font)
             #bouton_lancer_partie.dessiner(screen)
             screen.blit(bouton_lancer_partie, position_bouton)
 
             texte_mise = font.render(f"Mise totale : {mise_choisie} €", True, (211, 211, 211))
-            screen.blit(texte_mise, (50, 200))
+            screen.blit(texte_mise, (270, 200))
             #Erreur si pas de mise
             if message_erreur_mise:
                 afficher_message_mise()

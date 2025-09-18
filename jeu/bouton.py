@@ -16,7 +16,8 @@ class Bouton:
         if self.image is not None:
             surface.blit(self.image, self.rect)
         else:
-            pygame.draw.rect(surface, self.couleur_fond, self.rect)
+            if self.couleur_fond is not None:
+                pygame.draw.rect(surface, self.couleur_fond, self.rect)
             texte_surface = self.font.render(self.texte, True, self.couleur_texte)
             text_rect = texte_surface.get_rect(center=self.rect.center)
             surface.blit(texte_surface, text_rect)
