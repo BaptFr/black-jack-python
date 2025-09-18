@@ -1,16 +1,21 @@
 import pygame
 
 class Bouton:
-    def __init__(self, x, y, width, height, texte, couleur_fond, couleur_texte, font, *, visible=True):
+    def __init__(self, x, y, width, height, texte, couleur_fond, couleur_texte, font, image=None, *, visible=True):
         self.rect = pygame.Rect(x, y, width, height)
         self.texte = texte
         self.couleur_fond = couleur_fond
         self.couleur_texte = couleur_texte
         self.font = font
+        self.image = image
         self.visible = visible
 
     def dessiner(self, surface):
-        if self.visible:
+        if not self.visible:
+            return
+        if self.image is not None:
+            surface.blit(self.image, self.rect)
+        else:
             pygame.draw.rect(surface, self.couleur_fond, self.rect)
             texte_surface = self.font.render(self.texte, True, self.couleur_texte)
             text_rect = texte_surface.get_rect(center=self.rect.center)
