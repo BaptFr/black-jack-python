@@ -47,7 +47,10 @@ boutons_mises = [
     (Bouton(160, 300, 100, 40, "50 €", (26, 35, 126), (255, 255, 255), font), 50),
     (Bouton(270, 300, 100, 40, "100 €", (26, 35, 126), (255, 255, 255), font), 100),
 ]
-bouton_lancer_partie = Bouton(400, 300, 200, 40, "Lancer la partie", (83, 109, 254), (255, 255, 255), font, visible=True)
+#Version dessinée bouton_lancer_partie = Bouton(400, 300, 200, 40, "Lancer la partie", (83, 109, 254), (255, 255, 255), font, visible=True)
+bouton_lancer_partie = pygame.image.load("assets/images/boutons/lancer_partie_btn.png").convert_alpha()
+position_bouton = (400, 290)
+rect_bouton = bouton_lancer_partie.get_rect(topleft=position_bouton)
 
 #clock framerate pour limiter
 clock = pygame.time.Clock()
@@ -193,7 +196,7 @@ while running:
                             besoin_rafraichissement = True
                         break
                 # Récupération des objets après création de la partie
-                if bouton_lancer_partie.est_clique(pos):
+                if rect_bouton.collidepoint(pos):
                     if mise_choisie == 0:
                         message_erreur_mise = True
                         besoin_rafraichissement = True
@@ -269,7 +272,9 @@ while running:
         if saisie_mise_active:
             for bouton, _ in boutons_mises:
                 bouton.dessiner(screen)
-            bouton_lancer_partie.dessiner(screen)
+            #bouton_lancer_partie.dessiner(screen)
+            screen.blit(bouton_lancer_partie, position_bouton)
+
             texte_mise = font.render(f"Mise totale : {mise_choisie} €", True, (211, 211, 211))
             screen.blit(texte_mise, (50, 200))
             #Erreur si pas de mise
