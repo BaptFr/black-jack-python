@@ -2,12 +2,16 @@ import pygame
 
 class Bouton:
     def __init__(self, x, y, width, height, texte, couleur_fond, couleur_texte, font, image=None, *, visible=True):
-        self.rect = pygame.Rect(x, y, width, height)
+        if image is not None:
+            self.image = image
+            self.rect = self.image.get_rect(topleft=(x, y))
+        else:
+            self.image = None
+            self.rect = pygame.Rect(x, y, width, height)
         self.texte = texte
         self.couleur_fond = couleur_fond
         self.couleur_texte = couleur_texte
         self.font = font
-        self.image = image
         self.visible = visible
 
     def dessiner(self, surface):
