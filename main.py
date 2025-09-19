@@ -28,7 +28,7 @@ tour_joueur = None
 # pygame config affichage
 screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption(" BLACKJACK ")
-font = pygame.font.SysFont("Arial", 24)
+font = pygame.font.Font("assets/fonts/pixel_font.ttf", 14)
 background_image = pygame.image.load("assets/images/fond/background.png")
 fond_image = pygame.transform.scale(background_image, screen.get_size())
 
@@ -41,15 +41,27 @@ jeu_initialise = False
 message_erreur_mise = False
 
 
-mises_possibles = [25, 50, 100]
-boutons_mises = [
-    (Bouton(50, 300, 100, 40, "25 €", (26, 35, 126), (255, 255, 255), font), 25),
-    (Bouton(160, 300, 100, 40, "50 €", (26, 35, 126), (255, 255, 255), font), 50),
-    (Bouton(270, 300, 100, 40, "100 €", (26, 35, 126), (255, 255, 255), font), 100),
+jetons = [
+    {"chemin": "assets/images/jetons/jeton_rouge.png", "valeur": 25, "pos": (160, 280)},
+    {"chemin": "assets/images/jetons/jeton_vert.png",  "valeur": 50, "pos": (270, 280)},
+    {"chemin": "assets/images/jetons/jeton_noir.png",  "valeur": 100, "pos": (380, 280)},
 ]
-#Version dessinée bouton_lancer_partie = Bouton(400, 300, 200, 40, "Lancer la partie", (83, 109, 254), (255, 255, 255), font, visible=True)
+for j in jetons:
+    j["image"] = pygame.image.load(j["chemin"]).convert_alpha()
+    j["image"] = pygame.transform.scale(j["image"], (80, 80))
+    j["rect"] = j["image"].get_rect(topleft=j["pos"])
+
+def afficher_jetons(screen, jetons, font):
+    for j in jetons:
+        # Affichage de l'image
+        screen.blit(j["image"], j["pos"])
+        # Affichage de la valeur en dessous
+        texte = font.render(f"{j['valeur']} €", True, (255, 255, 255))
+        text_rect = texte.get_rect(center=(j["rect"].centerx, j["rect"].bottom + 12))
+        screen.blit(texte, text_rect)
+
 bouton_lancer_partie = pygame.image.load("assets/images/boutons/lancer_partie_btn.png").convert_alpha()
-position_bouton = (400, 290)
+position_bouton = (490, 290)
 rect_bouton = bouton_lancer_partie.get_rect(topleft=position_bouton)
 
 #clock framerate pour limiter
@@ -111,8 +123,8 @@ def afficher_mains_joueur(joueur):
              pygame.draw.rect(
                 screen,
                 (255, 0, 0),
-                (position_x_main -10, position_y_cartes, 140, 120 + 30 * len(main)),
-                2
+                (position_x_main  -10, position_y_cartes, 140, 120 + 30 * len(main)),
+                1
             )
 
 def afficher_mises(mises):
@@ -151,11 +163,20 @@ if jeu and controleur:
 
 
 ## GESTION PARAMETRES AFFICHAGE PYGAME ##
-bouton_tirer = Bouton(600, 350, 100, 40, "Tirer", (24, 148, 48), (255, 255, 255), font, visible=False)
-bouton_rester = Bouton(600, 400, 100, 40, "Rester", (200, 0, 0), (255, 255, 255), font,visible=False)
-bouton_restart = Bouton(550, 350, 200, 80, "Rejouer", (0, 0, 200), (200, 200, 200), font, visible = False)
-bouton_split =  Bouton(600, 450, 100, 40, "Split", (255, 215, 0), (255, 255, 255), font, visible=False)
-bouton_doubler = Bouton(600, 500, 100, 40, "Doubler", (255, 165, 0), (255, 255, 255), font, visible=False)
+#BOUTONS pixel art
+btn_tirer_img = pygame.image.load("assets/images/boutons/tirer_btn.png").convert_alpha()
+btn_rester_img = pygame.image.load("assets/images/boutons/rester_btn.png").convert_alpha()
+btn_split_img = pygame.image.load("assets/images/boutons/split_btn.png").convert_alpha()
+btn_doubler_img = pygame.image.load("assets/images/boutons/doubler_btn.png").convert_alpha()
+btn_rejouer_img = pygame.image.load("assets/images/boutons/rejouer_btn.png").convert_alpha()
+
+
+bouton_tirer = Bouton(600, 350, 100, 40, "Tirer", None, (255, 255, 255), font, image=btn_tirer_img, visible=False)
+bouton_rester = Bouton(600, 400, 100, 40, "Rester", None, (255, 255, 255), font, image=btn_rester_img,visible=False)
+bouton_split =  Bouton(600, 450, 100, 40, "Split", None, (255, 255, 255), font, image=btn_split_img, visible=False)
+bouton_doubler = Bouton(600, 500, 100, 40, "Doubler", None, (255, 255, 255), font, image=btn_doubler_img, visible=False)
+bouton_restart = Bouton(550, 350, 200, 80, "Rejouer", None, (200, 200, 200), font, image=btn_rejouer_img, visible = False)
+
 #GESTION du rafraichissement: action/inaction
 running = True
 besoin_rafraichissement = True
@@ -185,13 +206,13 @@ while running:
             #Clic Bouton Mises
             if saisie_mise_active:
                 bouton_restart.visible = False
-                for bouton, mise in boutons_mises:
-                    if bouton.est_clique(pos):
+                for j in jetons:
+                    if j["rect"].collidepoint(pos):
                         solde_actuel = gestion_partie.partie.solde if gestion_partie.partie else gestion_partie.solde_initial
-                        if mise_choisie + mise > solde_actuel  :
-                            print(f"Solde insuffisant")
+                        if mise_choisie + j["valeur"] > solde_actuel:
+                            print("Solde insuffisant")
                         else:
-                            mise_choisie += mise
+                            mise_choisie += j["valeur"]
                             print(f"Mise choisie : {mise_choisie} €")
                             besoin_rafraichissement = True
                         break
@@ -251,10 +272,31 @@ while running:
                     controleur.tour_joueur.jouer("stand")
                     besoin_rafraichissement = True
 
+    ##AFFICHAGE CURSEUR/MAIN
+    pos = pygame.mouse.get_pos()
+    curseur_main = False
+    if saisie_mise_active:
+        if rect_bouton.collidepoint(pos):
+            curseur_main = True
+        for j in jetons:
+            if j["rect"].collidepoint(pos):
+                curseur_main = True
+                break
+    else:
+        for bouton in [bouton_tirer, bouton_rester, bouton_split, bouton_doubler, bouton_restart]:
+            if bouton.visible and bouton.rect.collidepoint(pos):
+                curseur_main = True
+                break
+
+    if curseur_main:
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+    else:
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
     if controleur is not None and controleur.tour_croupier.en_cours:
         controleur.tour_croupier.mise_a_jour()
         besoin_rafraichissement = True
+
 
     ##MAJ DE L'AFFICHAGE/Chaque action
     if besoin_rafraichissement:
@@ -270,13 +312,12 @@ while running:
 
         #Aff Boutons Mises avant débit de partie
         if saisie_mise_active:
-            for bouton, _ in boutons_mises:
-                bouton.dessiner(screen)
+            afficher_jetons(screen, jetons, font)
             #bouton_lancer_partie.dessiner(screen)
             screen.blit(bouton_lancer_partie, position_bouton)
 
             texte_mise = font.render(f"Mise totale : {mise_choisie} €", True, (211, 211, 211))
-            screen.blit(texte_mise, (50, 200))
+            screen.blit(texte_mise, (270, 200))
             #Erreur si pas de mise
             if message_erreur_mise:
                 afficher_message_mise()
