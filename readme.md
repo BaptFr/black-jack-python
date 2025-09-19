@@ -8,7 +8,7 @@ Projet de jeu BlackJack codé en Python 🐍  pour travailler la POO et la logiq
 </br> 
 
 <div align="center">
-<img src="https://i.imgur.com/RamEZzo.gif" />
+<img src="https://i.imgur.com/u1PezXQ.gif" />
 </div>
 
 </br> 
