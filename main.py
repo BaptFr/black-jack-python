@@ -112,8 +112,8 @@ def afficher_message_texte(message, x, y):
 
 def afficher_mains_joueur(joueur):
     position_y_cartes = 375
-    position_x_depart = 200
-    espacement_y = 200  #Ecart pour split
+    position_x_depart = 235
+    espacement_y = 150  #Ecart pour split
     for index_main, main in enumerate(joueur):
         #Gestion affichage Split
         position_x_main = position_x_depart + index_main *espacement_y
@@ -128,9 +128,9 @@ def afficher_mains_joueur(joueur):
             )
 
 def afficher_mises(mises):
-    position_x = 50
-    position_y = 320
-    espacement = 250
+    position_x = 200
+    position_y = 330
+    espacement = 200
 
     for i, mise in enumerate(mises):
         texte_mise = font.render(f"Mise main: {mise} €", True, (211, 211, 211))
@@ -186,7 +186,7 @@ if gestion_partie.controleur and gestion_partie.tour_croupier:
       if gestion_partie.tour_croupier.en_cours:
         gestion_partie.controleur.index_main_joueur = 0
 else:
-    print("Erreur :Tour corupier ou  controleur non initialisé.")
+    print("Erreur :Tour croupier ou  controleur non initialisé.")
 
 #méthode tirage carte avec index main
 def tirer_carte_joueur_index(partie, index_main):
@@ -324,7 +324,7 @@ while running:
 
         #Aff Cartes
         if jeu and controleur:
-            afficher_cartes(jeu.croupier, 200, 50, masquee=not controleur.tour_joueur_fini)
+            afficher_cartes(jeu.croupier, 235, 50, masquee=not controleur.tour_joueur_fini)
             afficher_mains_joueur(jeu.joueur)
 
             #Aff Scores
@@ -354,7 +354,7 @@ while running:
             #Fin: Messages + bouton restart
             if controleur.jeu_fini:
                 message_fin = font.render(controleur.message_jeu_fini, True, (235, 237, 239), (52, 73, 94))
-                screen.blit(message_fin, (240, 260))
+                screen.blit(message_fin, (150, 290))
                 bouton_restart.visible = True
                 bouton_tirer.visible = False
                 bouton_rester.visible = False

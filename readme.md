@@ -20,8 +20,15 @@ Projet de jeu BlackJack codé en Python 🐍  pour travailler la POO et la logiq
 
 </br> 
 
+2. **Installez et activer l'environnement virtuel**
 
-2. **Installez les dépendances**
+Installer l'environnement virtuel:
+- Commandes Bash pour l'installer:
+    python3 -m venv venv
+  Puis l'activer:
+    source venv/bin/activate
+
+3. **Installez simplement et rapidement les dépendances nécessaires**
 - Commandes bash:
   pip install -r requirements.txt
 
