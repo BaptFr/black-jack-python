@@ -1,10 +1,9 @@
-<div align="center"  ><img src="https://i.imgur.com/d2IV9U9.jpeg" width="150"/> </div>
+<div align="center" > <img src="https://i.imgur.com/HYeLMSk.png" width="150"/>  </div>
 
 <h1 align="center"> ♥️♣️ BlackJack en Python ♦️♠️ <h1>
 </br>
-Projet de jeu BlackJack codé en Python 🐍  pour travailler la POO et la logique de jeu.
+<p align="center">Projet personnel de jeu BlackJack (règles françaises), développé en Python 🐍 ,  pour travailler la Programmation Orientée Objet et la logique de jeu. </p>
 
-</br>
 </br> 
 
 <div align="center">
@@ -61,3 +60,6 @@ L’as peut valoir 1 ou 11, selon ce qui est le plus favorable.
 ## 📄 Règles officielles
 Pour consulter les règles officielles du BlackJack (Arrêté Legifrance) :
 [📘 Télécharger le PDF](https://github.com/BaptFr/black-jack-python/blob/master/assets/regles-blackjack.pdf)
+
+<div align="center" ><img src="https://i.imgur.com/d2IV9U9.jpeg" width="150"/> </div>
+
